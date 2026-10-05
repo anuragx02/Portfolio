@@ -1,16 +1,27 @@
-# Anurag — AI Immersive Content Creator Portfolio
+# Anurag Studio Portfolio
 
-Standalone HTML/CSS/JS prototype inspired by the supplied reference portfolio.
+Vite + React portfolio for Anurag's AI creative practice.
 
 ## Run
-Open `index.html` directly in a browser, or serve the folder with any static server.
+
+Install dependencies and start the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+Create a production build with `npm run build`.
+
+## Files
+
+- `index.html` - document shell and metadata
+- `src/main.tsx` - React application and interactions
+- `src/data.ts` - profile, skills, and tools content
+- `src/styles.css` - visual system and responsive layout
 
 ## Replace before publishing
-- Hero artwork
-- Email
-- LinkedIn
-- X/Twitter
-- Resume link
-- Any project-specific visuals/content
 
-The service offering and tool categories follow the supplied reference, while the identity and copy are adapted for Anurag.
+- Portrait or original visual assets
+- Portfolio projects and case studies
+- Any additional personal branding details

@@ -13,6 +13,10 @@ npm run dev
 
 Create a production build with `npm run build`.
 
+## Deploy
+
+Import this repository into Vercel. Vercel will use the included `vercel.json` configuration and deploy the `dist` directory after each push to `main`.
+
 ## Files
 
 - `index.html` - document shell and metadata

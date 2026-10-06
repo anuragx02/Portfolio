@@ -64,9 +64,9 @@ function Header() {
   }, []);
 
   const nav = [
+    ['Work', 'portfolio'],
     ['Skills', 'skills'],
     ['Tools', 'tools'],
-    ['Portfolio', 'portfolio'],
     ['Connect', 'connect'],
   ];
 
@@ -84,7 +84,7 @@ function Header() {
           ))}
         </nav>
         <button className="connect-pill" onClick={() => scrollToSection('connect')}>
-          Let&apos;s Connect
+          Hire me
         </button>
       </div>
     </header>
@@ -128,16 +128,16 @@ function Hero() {
           </div>
           <div className="fellowship-card">
             <span className="fellowship-logo">IF</span>
-            <span>Building a <strong>personal AI practice</strong> in public</span>
+            <span><strong>AI Creator Fellowship</strong> · India Future AI</span>
             <ExternalLink size={14} />
           </div>
           <p>I create AI-powered images, videos, social content and digital experiences.</p>
           <div className="hero-actions">
-            <button className="primary-btn" onClick={() => scrollToSection('skills')}>
-              Explore My Skills <ArrowDown size={16} />
+            <button className="primary-btn" onClick={() => scrollToSection('portfolio')}>
+              See the work <ArrowDown size={16} />
             </button>
             <button className="secondary-btn" onClick={() => scrollToSection('connect')}>
-              <Mail size={16} /> Let&apos;s Connect
+              <Mail size={16} /> Hire me
             </button>
           </div>
         </div>
@@ -159,8 +159,16 @@ function Hero() {
           ))}
         </div>
       </div>
-      <button className="explore-work" onClick={() => scrollToSection('skills')}>
-        <span>EXPLORE MY SKILLS</span>
+      <div className="container reel-wrap reveal">
+        <div className="reel-frame" role="img" aria-label="Showreel placeholder">
+          <span className="ph-tag">PLACEHOLDER</span>
+          <span className="reel-play"><Play size={28} /></span>
+          <strong>Showreel goes here</strong>
+          <small>Drop in a 30-60s cut of your best AI video work (MP4 or embed)</small>
+        </div>
+      </div>
+      <button className="explore-work" onClick={() => scrollToSection('portfolio')}>
+        <span>SCROLL</span>
         <span className="scroll-circle"><ArrowDown size={14} /></span>
       </button>
     </section>
@@ -172,7 +180,7 @@ function SkillsSection() {
   return (
     <section id="skills" className="section section-alt">
       <div className="container">
-        <SectionHeader kicker="CAPABILITIES" title="What I Do" note="100% AI creative workflow ⚡" />
+        <SectionHeader kicker="02 / CAPABILITIES" title="What I Do" note="100% AI creative workflow ⚡" />
         <div className="skills-grid">
           {skills.map((skill, index) => {
             const Icon = skillIcons[index] ?? Sparkles;
@@ -207,7 +215,7 @@ function ToolsSection() {
   return (
     <section id="tools" className="section section-dark tools-section">
       <div className="container">
-        <SectionHeader kicker="AI TOOLKIT" title="Tools I Use" note="workflow stack ✦" centered />
+        <SectionHeader kicker="03 / AI TOOLKIT" title="Tools I Use" note="workflow stack ✦" centered />
         <div className="tools-grid">
           {tools.map((tool) => (
             <article key={tool.name} className="tool-card">
@@ -218,6 +226,44 @@ function ToolsSection() {
               <p>{tool.usage}</p>
             </article>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const caseStudies = [
+  { n: '01', title: 'Case study title', kind: 'AI video' },
+  { n: '02', title: 'Case study title', kind: 'AI images' },
+  { n: '03', title: 'Case study title', kind: 'Social content' },
+  { n: '04', title: 'Case study title', kind: 'Interactive build' },
+];
+
+function WorkSection() {
+  return (
+    <section id="portfolio" className="section section-dark work-section">
+      <div className="container">
+        <SectionHeader kicker="01 / SELECTED WORK" title="Process, not just output" note="Each piece shows the brief, the prompts, the iterations and the result." />
+        <div className="work-grid">
+          {caseStudies.map((c) => (
+            <article key={c.n} className="work-card">
+              <div className="work-media"><span className="ph-tag">PLACEHOLDER</span><MonitorPlay size={30} /></div>
+              <div className="work-body">
+                <span className="work-num">{c.n} · {c.kind}</span>
+                <h3>{c.title}</h3>
+                <ul>
+                  <li><b>Brief</b> What the piece had to do</li>
+                  <li><b>Process</b> Prompt iterations, tools, before / after</li>
+                  <li><b>Result</b> Final piece and what you learned</li>
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="build-card">
+          <span className="ph-tag">PLACEHOLDER</span>
+          <h3>Something I built</h3>
+          <p>One interactive piece you made, with a short note on how it works.</p>
         </div>
       </div>
     </section>
@@ -252,9 +298,10 @@ function ContactSection() {
       <div className="contact-glow" />
       <div className="container narrow">
         <div className="contact-heading">
-          <span>say hello ✦</span>
+          <span>04 / HIRE ME</span>
           <h2>Let&apos;s create something interesting.</h2>
-          <p>Have an idea, project or opportunity? Let&apos;s connect.</p>
+          <p>Have an idea, project or opportunity? Email me directly.</p>
+          <a className="primary-btn hire-btn" href={`mailto:${profile.email}?subject=Hiring%20inquiry`}><Mail size={16} /> Hire me</a>
         </div>
         <div className="email-card">
           <Sparkles className="email-spark" size={20} />
@@ -328,9 +375,9 @@ function App() {
       <Header />
       <main>
         <Hero />
+        <WorkSection />
         <SkillsSection />
         <ToolsSection />
-        <PlaceholderSection id="portfolio" title="Portfolio" />
         <ContactSection />
       </main>
       <Footer />

@@ -14,14 +14,14 @@ export function DenoiseTile() {
   const data = React.useMemo(() => {
     const c = document.createElement('canvas'); c.width = W; c.height = H;
     const g = c.getContext('2d')!; const r = rng(seed);
-    g.fillStyle = '#04100d'; g.fillRect(0, 0, W, H);
+    g.fillStyle = '#08090c'; g.fillRect(0, 0, W, H);
     for (let i = 0; i < 9; i++) {
-      const x = r() * W, y = r() * H, rad = 40 + r() * 110, hh = 150 + r() * 40, l = 40 + r() * 25;
+      const x = r() * W, y = r() * H, rad = 40 + r() * 110, hh = 215 + r() * 20, l = 40 + r() * 25;
       const gr = g.createRadialGradient(x, y, 0, x, y, rad);
-      gr.addColorStop(0, `hsla(${hh},85%,${l}%,.9)`); gr.addColorStop(1, `hsla(${hh},85%,${l}%,0)`);
+      gr.addColorStop(0, `hsla(${hh},9%,${l}%,.9)`); gr.addColorStop(1, `hsla(${hh},9%,${l}%,0)`);
       g.fillStyle = gr; g.fillRect(0, 0, W, H);
     }
-    g.strokeStyle = 'rgba(234,246,241,.5)'; g.lineWidth = 1.2;
+    g.strokeStyle = 'rgba(241,243,247,.5)'; g.lineWidth = 1.2;
     for (let i = 0; i < 5; i++) { g.beginPath(); g.ellipse(W / 2, H / 2, 30 + i * 22, 14 + i * 10, r() * 3, 0, 6.28); g.stroke(); }
     const clean = g.getImageData(0, 0, W, H);
     const nr = rng(seed + 99); const noise = new Uint8ClampedArray(W * H);

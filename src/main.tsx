@@ -5,7 +5,7 @@ import './styles.css';
 import { profile, skills, tools } from './data';
 import { WorkTile } from './Work';
 import { DenoiseTile } from './Denoise';
-const THEME = (new URLSearchParams(location.search).get('theme') || 'green');
+const THEME = (new URLSearchParams(location.search).get('theme') || 'chrome');
 document.documentElement.dataset.theme = THEME;
 
 const Orbit3D = React.lazy(() => import('./Orbit3D'));

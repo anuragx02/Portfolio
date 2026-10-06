@@ -265,19 +265,40 @@ function App() {
     if (!mq.matches) return;
     document.documentElement.classList.add('depth');
     let raf = 0;
-    const run = () => {
-      raf = 0;
+    type T = { el: HTMLElement; cur: number; tgt: number };
+    const tiles: T[] = Array.from(document.querySelectorAll<HTMLElement>('.dash > .t')).map((el) => ({ el, cur: 0, tgt: 0 }));
+    const root = document.documentElement;
+    let sy = scrollY, syT = scrollY;
+    const measure = () => {
+      /* read phase: all layout reads first, no writes in between */
       const h = innerHeight;
-      document.documentElement.style.setProperty('--sy', String(Math.round(scrollY)));
-      document.querySelectorAll<HTMLElement>('.dash > .t').forEach((el) => {
-        const r = el.getBoundingClientRect();
-        const d = Math.max(-1, Math.min(1, (r.top + r.height / 2 - h / 2) / (h / 2 + Math.min(r.height, h) / 2)));
-        el.style.setProperty('--d', d.toFixed(3));
-      });
+      syT = scrollY;
+      for (const t of tiles) {
+        const r = t.el.getBoundingClientRect();
+        t.tgt = Math.max(-1, Math.min(1, (r.top + r.height / 2 - h / 2) / (h / 2 + Math.min(r.height, h) / 2)));
+      }
     };
-    const on = () => { if (!raf) raf = requestAnimationFrame(run); };
-    run(); addEventListener('scroll', on, { passive: true }); addEventListener('resize', on);
-    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); document.documentElement.classList.remove('depth'); if (raf) cancelAnimationFrame(raf); };
+    let last = 0;
+    const tick = (now = performance.now()) => {
+      raf = 0;
+      const dt = last ? Math.min(64, now - last) : 16; last = now;
+      /* ease toward the scroll-driven target (frame-rate independent enough at ~60fps) */
+      const k = 1 - Math.exp(-dt / 85);
+      let moving = false;
+      sy += (syT - sy) * k;
+      if (Math.abs(syT - sy) > 0.4) moving = true; else sy = syT;
+      root.style.setProperty('--sy', sy.toFixed(1));
+      for (const t of tiles) {
+        const diff = t.tgt - t.cur;
+        if (Math.abs(diff) > 0.0008) { t.cur += diff * k; moving = true; } else t.cur = t.tgt;
+        t.el.style.setProperty('--d', t.cur.toFixed(4));
+      }
+      if (moving) raf = requestAnimationFrame(tick); else last = 0;
+    };
+    const on = () => { measure(); if (!raf) raf = requestAnimationFrame(tick); };
+    measure(); sy = syT; tiles.forEach((t) => (t.cur = t.tgt)); tick();
+    addEventListener('scroll', on, { passive: true }); addEventListener('resize', on);
+    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); root.classList.remove('depth'); if (raf) cancelAnimationFrame(raf); };
   }, []);
   React.useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.1 });

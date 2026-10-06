@@ -317,7 +317,7 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#6f7b92;--c3:#2a3040}
 /* 3D depth */
 .depth .dash>.t:nth-child(even){--sk:-1}
 .depth .dash{perspective:1100px;perspective-origin:50% 35%}
-.depth .dash>.t{--d:0;transform:translateZ(calc(var(--d)*var(--d)*-480px)) rotateX(calc(var(--d)*-28deg)) rotateY(calc(var(--d)*var(--sk,1)*9deg));opacity:calc(1 - var(--d)*var(--d)*.9);will-change:transform,opacity}
+.depth .dash>.t{--d:0;transform:translateZ(calc(var(--d)*var(--d)*-250px)) rotateX(calc(var(--d)*-14deg)) rotateY(calc(var(--d)*var(--sk,1)*3deg));opacity:calc(1 - var(--d)*var(--d)*.55);will-change:transform,opacity}
 .depth .hero-copy{transform:translate3d(0,calc(var(--sy,0)*-.1px),0)}
 .depth .lumen{translate:0 calc(var(--sy,0)*-.18px)}
 .depth .hero-bg{transform:translate3d(0,calc(var(--sy,0)*.25px),0)}

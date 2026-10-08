@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ArrowDown, ArrowUpRight, Check, Copy, Mail, MousePointerClick, Move3d, Play } from 'lucide-react';
 import './styles.css';
-import { profile, skills, tools } from './data';
+import { profile, skills, toolGroups } from './data';
 import { WorkTile } from './Work';
 import { FilmPlayer } from './FilmPlayer';
 import { bmwFilm } from './projects';
@@ -196,14 +196,15 @@ function Toolkit() {
   return (
     <div className="t t-tool" id="toolkit">
       <div>
-        <SecHead n="04" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="Workflow tools I use." />
-        <div className="tools">
-          {tools.map((t) => (
-            <article key={t.name} className="tool" onPointerMove={onMove}>
-              <span>{t.category}</span>
-              <h3>{t.name}</h3>
-              <p>{t.usage}</p>
-            </article>
+        <SecHead n="04" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="The tools behind the work." />
+        <div className="stack">
+          {toolGroups.map((g, gi) => (
+            <section key={g.id} className="sgrp" onPointerMove={onMove}>
+              <header><span>{String(gi + 1).padStart(2, '0')}</span><h3>{g.label}</h3><p>{g.note}</p></header>
+              <ul className="tags">
+                {g.tools.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+            </section>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FilmPlayer } from './FilmPlayer';
 import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, LayoutGrid, List, X } from 'lucide-react';
 import { DISCIPLINES, projects, type Project } from './projects';
@@ -30,7 +31,7 @@ export function WorkTile() {
   return (
     <div className="t t-work" id="work">
       <p className="kicker"><b>01</b> / WORK INDEX · {projects.length} {projects.length === 1 ? 'PROJECT' : 'PROJECTS'}</p>
-      <h2 className="th">Process, <em>not just</em> output</h2>
+      <h2 className="th">Selected <em>work</em></h2>
       <div className="wtools">
         <div className="chips2" role="tablist" aria-label="Filter by discipline">
           {['ALL', ...DISCIPLINES].map((d) => (
@@ -76,9 +77,18 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
   React.useEffect(() => {
     const prev = document.activeElement as HTMLElement | null;
     ref.current?.focus();
+    document.querySelectorAll('video').forEach((v) => v.pause());
     document.body.style.overflow = 'hidden';
     const k = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'Tab') {
+        const items = ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],video[controls],[tabindex="0"]');
+        if (items?.length) {
+          const first = items[0], last = items[items.length - 1];
+          if (e.shiftKey && (document.activeElement === first || document.activeElement === ref.current)) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && (document.activeElement === last || document.activeElement === ref.current)) { e.preventDefault(); first.focus(); }
+        }
+      }
       if (e.key === 'ArrowRight') setI((v) => Math.min(n - 1, v + 1));
       if (e.key === 'ArrowLeft') setI((v) => Math.max(0, v - 1));
     };
@@ -92,6 +102,7 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
         <button className="sb-x" onClick={onClose} aria-label="Close"><X size={18} /></button>
         <p className="kicker"><b>{p.discipline.toUpperCase()}</b> {p.placeholder && <em className="ph">PLACEHOLDER</em>}</p>
         <h3>{p.title}</h3>
+        {p.film && <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></>}
         <div className="sb-strip" style={{ ['--i' as string]: i } as React.CSSProperties}>
           {p.panels.map((x, k) => (
             <button key={k} className={`sb-p ${k === i ? 'on' : ''} ${k === i && flip ? 'flip' : ''} s${k % 4}`} onClick={() => (k === i ? setFlip((f) => !f) : setI(k))} aria-label={`Panel ${k + 1}${k === i ? ', press to flip' : ''}`}>

@@ -14,18 +14,11 @@ export const skills = [
   { id: 'creative-ai', icon: '🧠', title: 'Creative AI', shortDesc: 'Prompt engineering, AI research, ideation and AI-assisted content creation.', toolsUsed: ['Google AI Studio', 'Gemini 2.5', 'Claude 3.7', 'NotebookLM'] },
 ];
 
-export const tools = [
-  { name: 'Google AI Studio', category: 'Prototyping', usage: 'System prompt development & multimodal API prototyping.' },
-  { name: 'Gemini', category: 'AI Intelligence', usage: 'Deep research, complex synthesis & script outlines.' },
-  { name: 'Google Flow', category: 'Generative AI', usage: 'Experimental video workflows & visual automation.' },
-  { name: 'ChatGPT', category: 'Content', usage: 'Hook ideation, social messaging & audience personas.' },
-  { name: 'Claude', category: 'Reasoning', usage: 'Code architecture, long-form narratives & structured analysis.' },
-  { name: 'NotebookLM', category: 'Research', usage: 'Source-grounded research synthesis & audio breakdowns.' },
-  { name: 'ElevenLabs', category: 'Voice AI', usage: 'Neural voice cloning, narration & audio timing.' },
-  { name: 'CapCut', category: 'Video Edit', usage: 'Dynamic subtitles, speed ramping & video rhythm editing.' },
-  { name: 'VN', category: 'Mobile Edit', usage: 'Mobile frame trimming, multi-track audio & color grading.' },
-  { name: 'GitHub', category: 'Code', usage: 'Version control & repository management.' },
-  { name: 'Vercel', category: 'Deployment', usage: 'Instant global web deployment & edge serverless hosting.' },
-  { name: 'Netlify', category: 'Web Hosting', usage: 'Static site hosting & continuous integration pipelines.' },
+export const toolGroups = [
+  { id: 'video', label: 'AI Video', note: 'Text and image to film', tools: ['Google Flow', 'Veo', 'Kling', 'Seedance', 'Runway', 'Luma Dream Machine', 'Hailuo', 'Sora'] },
+  { id: 'images', label: 'AI Images', note: 'Stills, characters, concepts', tools: ['Midjourney', 'Nano Banana', 'ChatGPT Images', 'Flux', 'Ideogram', 'Leonardo', 'Magnific', 'Firefly'] },
+  { id: 'llm', label: 'LLMs & Research', note: 'Ideas, scripts, synthesis', tools: ['Gemini', 'ChatGPT', 'Claude', 'Grok', 'Perplexity', 'NotebookLM', 'Google AI Studio'] },
+  { id: 'voice', label: 'Voice & Music', note: 'Narration, sound, score', tools: ['ElevenLabs', 'Suno', 'Udio'] },
+  { id: 'edit', label: 'Editing & Design', note: 'Cut, grade, finish', tools: ['CapCut', 'Instagram Edits', 'VN', 'Canva'] },
+  { id: 'build', label: 'Build & Ship', note: 'Sites and deployment', tools: ['React', 'Vite', 'Python', 'GitHub', 'Vercel', 'Netlify'] },
 ];
-

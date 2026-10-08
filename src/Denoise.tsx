@@ -4,42 +4,53 @@ import { Shuffle } from 'lucide-react';
 const W = 320, H = 200, STEPS = 30;
 function rng(seed: number) { let s = seed >>> 0 || 1; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
 
+const PIECES = [
+  { src: '/covers/issue-02.jpg', title: 'Issue 02 · The Lane That Kept My Name' },
+  { src: '/covers/issue-05.jpg', title: 'Issue 05 · Half My Heart' },
+  { src: '/covers/issue-09.jpg', title: 'Issue 09 · Kite Season' },
+  { src: '/covers/issue-10.jpg', title: 'Issue 10 · Rooftop Radio' },
+];
+
 export function DenoiseTile() {
   const cv = React.useRef<HTMLCanvasElement>(null);
   const wrap = React.useRef<HTMLDivElement>(null);
   const reduce = React.useMemo(() => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches, []);
   const [step, setStep] = React.useState(reduce ? STEPS : 0);
-  const [seed, setSeed] = React.useState(4812);
+  const [piece, setPiece] = React.useState(0);
   const played = React.useRef(false);
-  const data = React.useMemo(() => {
-    const c = document.createElement('canvas'); c.width = W; c.height = H;
-    const g = c.getContext('2d')!; const r = rng(seed);
-    g.fillStyle = '#08090c'; g.fillRect(0, 0, W, H);
-    for (let i = 0; i < 9; i++) {
-      const x = r() * W, y = r() * H, rad = 40 + r() * 110, hh = 215 + r() * 20, l = 40 + r() * 25;
-      const gr = g.createRadialGradient(x, y, 0, x, y, rad);
-      gr.addColorStop(0, `hsla(${hh},9%,${l}%,.9)`); gr.addColorStop(1, `hsla(${hh},9%,${l}%,0)`);
-      g.fillStyle = gr; g.fillRect(0, 0, W, H);
-    }
-    g.strokeStyle = 'rgba(241,243,247,.5)'; g.lineWidth = 1.2;
-    for (let i = 0; i < 5; i++) { g.beginPath(); g.ellipse(W / 2, H / 2, 30 + i * 22, 14 + i * 10, r() * 3, 0, 6.28); g.stroke(); }
-    const clean = g.getImageData(0, 0, W, H);
-    const nr = rng(seed + 99); const noise = new Uint8ClampedArray(W * H);
-    for (let i = 0; i < noise.length; i++) noise[i] = nr() * 255;
-    return { clean, noise };
-  }, [seed]);
+  const [clean, setClean] = React.useState<ImageData | null>(null);
+  const noise = React.useMemo(() => {
+    const nr = rng(4812 + piece * 99); const n = new Uint8ClampedArray(W * H);
+    for (let i = 0; i < n.length; i++) n[i] = nr() * 255;
+    return n;
+  }, [piece]);
   React.useEffect(() => {
-    const c = cv.current; if (!c) return; const g = c.getContext('2d')!;
+    let dead = false;
+    const im = new Image();
+    im.onload = () => {
+      if (dead) return;
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const g = c.getContext('2d')!;
+      const s = Math.max(W / im.width, H / im.height);
+      const w = im.width * s, h = im.height * s;
+      g.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
+      setClean(g.getImageData(0, 0, W, H));
+    };
+    im.src = PIECES[piece].src;
+    return () => { dead = true; };
+  }, [piece]);
+  React.useEffect(() => {
+    const c = cv.current; if (!c || !clean) return; const g = c.getContext('2d')!;
     const out = g.createImageData(W, H); const a = 1 - step / STEPS; const k = a * a;
     for (let i = 0, p = 0; i < W * H; i++, p += 4) {
-      const nv = data.noise[i];
-      out.data[p] = data.clean.data[p] * (1 - k) + nv * k * 0.8;
-      out.data[p + 1] = data.clean.data[p + 1] * (1 - k) + nv * k;
-      out.data[p + 2] = data.clean.data[p + 2] * (1 - k) + nv * k * 0.85;
+      const nv = noise[i];
+      out.data[p] = clean.data[p] * (1 - k) + nv * k * 0.8;
+      out.data[p + 1] = clean.data[p + 1] * (1 - k) + nv * k;
+      out.data[p + 2] = clean.data[p + 2] * (1 - k) + nv * k * 0.85;
       out.data[p + 3] = 255;
     }
     g.putImageData(out, 0, 0);
-  }, [step, data]);
+  }, [step, clean, noise]);
   React.useEffect(() => {
     const el = wrap.current; if (!el || reduce) return;
     const io = new IntersectionObserver(([e]) => {
@@ -54,13 +65,13 @@ export function DenoiseTile() {
     <div className="t t-den" ref={wrap}>
       <p className="kicker"><b>03</b> / PROCESS</p>
       <h2 className="th">Watch a piece <em>form</em></h2>
-      <div className="den-view"><canvas ref={cv} width={W} height={H} role="img" aria-label="Placeholder artwork clearing from noise as the step slider moves" /><em className="ph">PLACEHOLDER ART</em></div>
+      <div className="den-view"><canvas ref={cv} width={W} height={H} role="img" aria-label={`${PIECES[piece].title} clearing from noise as the step slider moves`} /></div>
       <div className="den-ctl">
-        <label htmlFor="den-r" className="m">Step {String(step).padStart(2, '0')} / {STEPS} · seed {seed}</label>
+        <label htmlFor="den-r" className="m">Step {String(step).padStart(2, '0')} / {STEPS} · {PIECES[piece].title}</label>
         <input id="den-r" type="range" min={0} max={STEPS} value={step} onChange={(e) => setStep(+e.target.value)} />
-        <button className="btn btn-ghost" onClick={() => { setSeed((s) => (s * 7 + 13) % 99991); setStep(0); }}><Shuffle size={14} /> New seed</button>
+        <button className="btn btn-ghost" onClick={() => { setPiece((p) => (p + 1) % PIECES.length); setStep(0); played.current = true; }}><Shuffle size={14} /> Next piece</button>
       </div>
-      <p className="note den-note">Placeholder. The real version shows one of my generated pieces clearing from noise, with its prompt.</p>
+      <p className="note den-note">Real pieces from Cover Stories, clearing from noise step by step - the way diffusion builds an image.</p>
     </div>
   );
 }

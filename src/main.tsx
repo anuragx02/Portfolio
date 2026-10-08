@@ -4,6 +4,8 @@ import { ArrowDown, ArrowUpRight, Check, Copy, Mail, MousePointerClick, Move3d, 
 import './styles.css';
 import { profile, skills, tools } from './data';
 import { WorkTile } from './Work';
+import { FilmPlayer } from './FilmPlayer';
+import { bmwFilm } from './projects';
 import { DenoiseTile } from './Denoise';
 const THEME = (new URLSearchParams(location.search).get('theme') || 'chrome');
 document.documentElement.dataset.theme = THEME;
@@ -68,7 +70,6 @@ function Hero() {
             <span className="h-line h-ai">AI<em>.</em></span>
           </h1>
           <p className="lede">I create AI-powered images, videos, social content and digital experiences.</p>
-          <div className="badge-ph"><b>Fellowship badge</b> · add program name and batch <em className="ph">PLACEHOLDER</em></div>
           <div className="cta">
             <button className="btn btn-solid" onClick={() => go('work')}>See the work <ArrowDown size={16} /></button>
             <button className="btn btn-ghost" onClick={() => go('contact')}><Mail size={16} /> Hire me</button>
@@ -82,12 +83,10 @@ function Hero() {
         </div>
       </div>
       <div className="wrap reel-wrap">
-        <div className="reel" role="img" aria-label="Showreel placeholder">
-          <em className="ph">PLACEHOLDER</em>
-          <span className="reel-play"><Play size={26} /></span>
-          <b>Showreel goes here</b>
-          <small>A 30-60s cut of your best AI video work (MP4 or embed)</small>
-          <span className="tc">00:00:00:00</span>
+        <div className="featured-film">
+          <div className="film-heading"><p className="kicker"><b>FEATURED FILM</b> / 2026</p><span>00:40 · GOOGLE FLOW</span></div>
+          <FilmPlayer film={bmwFilm} preview />
+          <div className="film-footer"><div><h2>BMW <em>in motion.</em></h2><p>A cinematic concept by Anurag. Four scenes. One open road.</p></div><button className="btn btn-ghost" onClick={() => go('work')}>Explore the sequence <ArrowDown size={14} /></button></div>
         </div>
       </div>
     </section>

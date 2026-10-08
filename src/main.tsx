@@ -7,6 +7,7 @@ import { WorkTile } from './Work';
 import { FilmPlayer } from './FilmPlayer';
 import { bmwFilm } from './projects';
 import { DenoiseTile } from './Denoise';
+import { CoverStories } from './CoverStories';
 const THEME = (new URLSearchParams(location.search).get('theme') || 'chrome');
 document.documentElement.dataset.theme = THEME;
 
@@ -147,7 +148,7 @@ function Orbit() {
   return (
     <div className="t t-orbit" id="orbit">
       <div>
-        <SecHead n="03" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
+        <SecHead n="04" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
         <div className="orbit">
           <div className="stage" ref={stage}>
             {ok && near ? (
@@ -196,7 +197,7 @@ function Toolkit() {
   return (
     <div className="t t-tool" id="toolkit">
       <div>
-        <SecHead n="04" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="The tools behind the work." />
+        <SecHead n="05" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="The tools behind the work." />
         <div className="stack">
           {toolGroups.map((g, gi) => (
             <section key={g.id} className="sgrp" onPointerMove={onMove}>
@@ -214,20 +215,50 @@ function Toolkit() {
 
 function Contact() {
   const [copied, setCopied] = React.useState(false);
+  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const send = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus('sending');
+    try {
+      const r = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      if (!r.ok) throw new Error('send failed');
+      setStatus('sent');
+      form.reset();
+    } catch {
+      setStatus('error');
+    }
+  };
   const copy = async () => {
     try { await navigator.clipboard.writeText(profile.email); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
   };
   return (
     <div className="t t-contact" id="contact">
       <div>
-        <p className="kicker"><span className="live" /> 05 / HIRE ME</p>
+        <p className="kicker"><span className="live" /> 06 / HIRE ME</p>
         <h2 className="big">Let&apos;s make something <em>unreal.</em></h2>
-        <p className="lede">Have an idea, project or opportunity? Email me directly.</p>
-        <div className="mail">
-          <a className="btn btn-solid glitch" data-t="Hire me" href={`mailto:${profile.email}?subject=Hiring%20inquiry`}><Mail size={16} /> Hire me</a>
-          <a className="addr" href={`mailto:${profile.email}`}>{profile.email}</a>
-          <button className="btn btn-ghost" onClick={copy}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button>
-        </div>
+        <p className="lede">Have an idea, project or opportunity? Send a message - it lands straight in my inbox.</p>
+        <form className="cform" onSubmit={send}>
+          <div className="cf-row">
+            <input name="name" type="text" required placeholder="Your name" autoComplete="name" aria-label="Your name" />
+            <input name="email" type="email" required placeholder="Your email" autoComplete="email" aria-label="Your email" />
+          </div>
+          <input name="subject" type="text" required placeholder="Subject" aria-label="Subject" />
+          <textarea name="message" required rows={5} placeholder="Message" aria-label="Message" />
+          <input type="text" name="_honey" className="cf-honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+          <input type="hidden" name="_captcha" value="false" />
+          <div className="cf-foot">
+            <button className="btn btn-solid glitch" data-t="Send" type="submit" disabled={status === 'sending'}><Mail size={16} /> {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send'}</button>
+            <a className="addr" href={`mailto:${profile.email}`}>{profile.email}</a>
+            <button type="button" className="btn btn-ghost" onClick={copy}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button>
+          </div>
+          {status === 'sent' && <p className="note cf-ok">Thanks - your message is on its way.</p>}
+          {status === 'error' && <p className="note cf-err">That didn&apos;t go through. Email me directly at {profile.email}.</p>}
+        </form>
         <div className="soc">
           <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={14} /></a>
           <a href={profile.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>
@@ -313,6 +344,7 @@ function App() {
         <Hero />
         <div className="wrap dash">
           <WorkTile />
+          <CoverStories />
           <DenoiseTile />
           <Orbit />
           <Toolkit />

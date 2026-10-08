@@ -1,7 +1,7 @@
 import React from 'react';
 import { FilmPlayer } from './FilmPlayer';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, ArrowRight, LayoutGrid, List, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, LayoutGrid, List, X } from 'lucide-react';
 import { DISCIPLINES, projects, type Project } from './projects';
 
 const PAGE = 5;
@@ -102,6 +102,7 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
         <button className="sb-x" onClick={onClose} aria-label="Close"><X size={18} /></button>
         <p className="kicker"><b>{p.discipline.toUpperCase()}</b> {p.placeholder && <em className="ph">PLACEHOLDER</em>}</p>
         <h3>{p.title}</h3>
+        {p.link && <p><a className="btn btn-ghost sb-link" href={p.link} target="_blank" rel="noreferrer">Open the full concept site <ArrowUpRight size={14} /></a></p>}
         {p.film && <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></>}
         <div className="sb-strip" style={{ ['--i' as string]: i } as React.CSSProperties}>
           {p.panels.map((x, k) => (

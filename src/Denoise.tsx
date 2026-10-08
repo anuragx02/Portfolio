@@ -52,7 +52,7 @@ export function DenoiseTile() {
   }, [reduce]);
   return (
     <div className="t t-den" ref={wrap}>
-      <p className="kicker"><b>02</b> / PROCESS</p>
+      <p className="kicker"><b>03</b> / PROCESS</p>
       <h2 className="th">Watch a piece <em>form</em></h2>
       <div className="den-view"><canvas ref={cv} width={W} height={H} role="img" aria-label="Placeholder artwork clearing from noise as the step slider moves" /><em className="ph">PLACEHOLDER ART</em></div>
       <div className="den-ctl">

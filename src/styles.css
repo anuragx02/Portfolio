@@ -443,3 +443,4 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .cf-err{color:#ff8a8a}
 .sb-link{margin:4px 0 14px}
 @media(max-width:640px){.cf-row{grid-template-columns:1fr}}
+.lc-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;filter:saturate(.92) contrast(1.05)}

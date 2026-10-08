@@ -225,7 +225,7 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .t .sechead{margin-bottom:22px;opacity:1;transform:none}
 .th{margin:12px 0 0;font:800 clamp(1.7rem,3.2vw,2.6rem)/1 var(--display);letter-spacing:-.03em}
 .th em{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.t-work{grid-column:span 12}.t-den{grid-column:span 5}.t-orbit{grid-column:span 7}.t-tool{grid-column:span 8}.t-contact{grid-column:span 4}
+.t-work{grid-column:span 12}.t-den{grid-column:span 5}.t-orbit{grid-column:span 7}.t-tool{grid-column:span 12}.t-contact{grid-column:span 12}
 .t-contact{background:linear-gradient(135deg,rgba(var(--acc-rgb),.18),rgba(var(--b-rgb),.18))}
 .t-contact .big{font-size:clamp(2.2rem,4vw,3.4rem)}
 .t-contact .wrap{opacity:1;transform:none}
@@ -375,3 +375,18 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 }
 .film-player iframe{display:block;width:100%;height:100%;border:0}
 .film-player>img{width:100%;height:100%;object-fit:contain}
+
+/* toolkit stack */
+.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:8px}
+.sgrp{--mx:50%;--my:50%;position:relative;padding:22px;background:var(--ink);transition:background .3s}
+.sgrp::before{content:"";position:absolute;inset:0;background:radial-gradient(280px circle at var(--mx) var(--my),rgba(var(--acc-rgb),.1),transparent 60%);opacity:0;transition:.3s;pointer-events:none}
+.sgrp:hover::before{opacity:1}
+.sgrp header{position:relative;margin-bottom:16px}
+.sgrp header span{font:600 10px var(--mono);letter-spacing:.16em;color:var(--lime)}
+.sgrp h3{margin:6px 0 4px;font:700 20px var(--display);letter-spacing:-.02em}
+.sgrp header p{margin:0;color:var(--mute);font-size:13px}
+.tags{position:relative;list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.tags li{padding:7px 12px;border:1px solid var(--line2);border-radius:99px;font:500 12px var(--mono);color:var(--bone);background:rgba(255,255,255,.02);transition:.2s}
+.tags li:hover{border-color:var(--lime);transform:translateY(-1px)}
+@media(max-width:1000px){.stack{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.stack{grid-template-columns:1fr}.sgrp{padding:18px}}

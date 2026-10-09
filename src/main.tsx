@@ -42,7 +42,7 @@ function Header() {
         <nav id="primary-nav" className={menu ? "is-open" : ""} aria-label="Primary" onClick={() => setMenu(false)}>
           <button onClick={() => go('about')}>About</button>
           <button onClick={() => go('work')}>Work</button>
-          <button onClick={() => go('orbit')}>Skills</button>
+          <button onClick={() => go('orbit')}>Process</button>
           <button onClick={() => go('toolkit')}>Toolkit</button>
           <button onClick={() => go('contact')}>Contact</button>
         </nav>
@@ -121,15 +121,15 @@ function HeroVideo() {
 }
 
 function Orbit() {
-  const practices=[
-    ['Image and art direction','Cover Stories and the stepwell carousel: composition, visual hierarchy and prompts developed around a clear idea.'],
-    ['AI film direction','BMW cinematic concept: four-scene sequence, continuity and a controlled film player.'],
-    ['Web design with AI','Sookha, Tola, Saanjh and Mewform: concept sites with responsive layouts and interactive product ideas.'],
-    ['Research and writing','Brand case studies: separating sourced evidence, design choices and assumptions that still need testing.'],
-    ['Podcast production','Brain Explained: ChatGPT source and artwork, NotebookLM audio, published through Spotify for Creators.'],
-    ['Interactive visual studies','Light / mood lab: exploring how lighting controls change the feel of a simple form.'],
+  const [open,setOpen]=React.useState<number|null>(null);
+  const steps=[
+    ['Find the question','The stepwell carousel begins with one question: why does a well need stairs? A clear idea gives the work a direction.'],
+    ['Look for evidence','The brand case studies separate sourced context from assumptions. Tola changed direction when the first gap was already served.'],
+    ['Set the visual direction','Cover Stories uses one finished editorial scene per issue. The reference is inspiration; the setting, words and composition belong to this collection.'],
+    ['Review and revise','A real Tola revision: the generic ergonomic-and-light claim became a load-label concept. The new idea still needs testing, not a claim of proven success.'],
+    ['Make the output usable','The work ends in a format people can explore: a swipeable carousel, film player, concept site or podcast. The source, artwork and audio steps remain distinct.'],
   ];
-  return <section className="t t-orbit" id="orbit"><SecHead n="06" label="PRACTICE / SHOWN IN THE WORK" title={<>What the work <em>demonstrates</em></>} note="Creative practice, not a list of certifications." /><div className="evidence-grid">{practices.map(([title,body])=><article key={title}><h3>{title}</h3><p>{body}</p></article>)}</div><p className="note" style={{marginTop:24}}>The tools below support this practice. The projects above show the outcomes.</p></section>;
+  return <section className="t t-orbit" id="orbit"><SecHead n="06" label="PROCESS / BEHIND THE WORK" title={<>From question to <em>output</em></>} note="Hover, focus or tap a card to look closer. These examples come from the actual projects." /><div className="process-cards">{steps.map(([title,body],i)=><button key={title} className={'process-card '+(open===i?'open':'')} aria-expanded={open===i} onClick={()=>setOpen(open===i?null:i)}><span className="process-number">{num(i+1)}</span><h3>{title}</h3><span className="process-reveal">{body}</span><span className="process-hint">{open===i?'Tap to close':'Look closer ↗'}</span></button>)}</div><div className="process-example"><p className="kicker">ONE DOCUMENTED REVISION / TOLA</p><p><strong>Before:</strong> 'Ergonomic and light' as the gap. <strong>After:</strong> a printed load-label concept, with the unresolved tests kept visible.</p><a href="/brands/tola/case-study.html">Read the reasoning ↗</a></div></section>;
 }
 
 function Toolkit() {

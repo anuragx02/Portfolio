@@ -77,7 +77,7 @@ function Hero() {
           </div>
         </div>
         <div className="lumen" aria-hidden="true">
-          <div className="lumen-core"><img className="lc-portrait" src="/portrait.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
+          <div className="lumen-core"><img className="lc-portrait" src="/portrait-choice-c.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
           <div className="tag t1">AI VIDEO</div>
           <div className="tag t2">AI IMAGES</div>
           <div className="tag t3">WEBSITES</div>

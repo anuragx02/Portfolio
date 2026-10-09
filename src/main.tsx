@@ -11,7 +11,7 @@ import { CoverStories } from './CoverStories';
 const THEME = (new URLSearchParams(location.search).get('theme') || 'chrome');
 document.documentElement.dataset.theme = THEME;
 
-const Orbit3D = React.lazy(() => import('./Orbit3D'));
+
 
 function XIcon() {
   return (
@@ -120,70 +120,16 @@ function HeroVideo() {
   );
 }
 
-function canUse3D() {
-  if (typeof window === 'undefined') return false;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  if ((navigator.hardwareConcurrency ?? 8) <= 2) return false;
-  try {
-    const c = document.createElement('canvas');
-    return !!(c.getContext('webgl2') || c.getContext('webgl'));
-  } catch { return false; }
-}
-
 function Orbit() {
-  const [selected, setSelected] = React.useState<number | null>(null);
-  const [near, setNear] = React.useState(false);
-  const [active, setActive] = React.useState(false);
-  const [ok] = React.useState(canUse3D);
-  const stage = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    const el = stage.current; if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setNear(true); setActive(e.isIntersecting); }, { rootMargin: '300px' });
-    io.observe(el); return () => io.disconnect();
-  }, []);
-  const items = skills.map((s) => ({ id: s.id, title: s.title }));
-  const cur = selected !== null ? skills[selected] : null;
-  return (
-    <div className="t t-orbit" id="orbit">
-      <div>
-        <SecHead n="06" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
-        <div className="orbit">
-          <div className="stage" ref={stage}>
-            {ok && near ? (
-              <React.Suspense fallback={<div className="stage-load">Loading 3D…</div>}>
-                <Orbit3D items={items} selected={selected} onSelect={setSelected} active={active} />
-              </React.Suspense>
-            ) : (
-              <div className="stage-load">{ok ? 'Loading 3D…' : '3D is off on this device. Use the list.'}</div>
-            )}
-            {ok && <span className="hint"><Move3d size={14} /> drag <MousePointerClick size={14} /> click</span>}
-          </div>
-          <div className="panel">
-            {cur ? (
-              <>
-                <p className="panel-n">/ {num((selected ?? 0) + 1)}</p>
-                <h3>{cur.title}</h3>
-                <p className="panel-d">{cur.shortDesc}</p>
-                <ul className="chips">{cur.toolsUsed.map((t) => <li key={t}>{t}</li>)}</ul>
-                <button className="btn btn-ghost" onClick={() => setSelected(null)}>Close</button>
-              </>
-            ) : (
-              <>
-                <p className="panel-n">/ 00</p>
-                <h3>Choose a card</h3>
-                <p className="panel-d">Each card is one discipline from my toolkit: what I make and which tools I use for it.</p>
-              </>
-            )}
-            <ol className="pick" aria-label="Disciplines">
-              {skills.map((s, i) => (
-                <li key={s.id}><button className={selected === i ? 'on' : ''} onClick={() => setSelected(selected === i ? null : i)}><span>{num(i + 1)}</span>{s.title}</button></li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const practices=[
+    ['Image and art direction','Cover Stories and the stepwell carousel: composition, visual hierarchy and prompts developed around a clear idea.'],
+    ['AI film direction','BMW cinematic concept: four-scene sequence, continuity and a controlled film player.'],
+    ['Web design with AI','Sookha, Tola, Saanjh and Mewform: concept sites with responsive layouts and interactive product ideas.'],
+    ['Research and writing','Brand case studies: separating sourced evidence, design choices and assumptions that still need testing.'],
+    ['Podcast production','Brain Explained: ChatGPT source and artwork, NotebookLM audio, published through Spotify for Creators.'],
+    ['Interactive visual studies','Light / mood lab: exploring how lighting controls change the feel of a simple form.'],
+  ];
+  return <section className="t t-orbit" id="orbit"><SecHead n="06" label="PRACTICE / SHOWN IN THE WORK" title={<>What the work <em>demonstrates</em></>} note="Creative practice, not a list of certifications." /><div className="evidence-grid">{practices.map(([title,body])=><article key={title}><h3>{title}</h3><p>{body}</p></article>)}</div><p className="note" style={{marginTop:24}}>The tools below support this practice. The projects above show the outcomes.</p></section>;
 }
 
 function Toolkit() {
@@ -195,7 +141,7 @@ function Toolkit() {
   return (
     <div className="t t-tool" id="toolkit">
       <div>
-        <SecHead n="05" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="The tools behind the work." />
+        <SecHead n="07" label="AI TOOLKIT" title={<>The <em>stack</em></>} note="A working reference of tools for making and exploring. Not every tool is used in every project." />
         <div className="stack">
           {toolGroups.map((g, gi) => (
             <section key={g.id} className="sgrp" onPointerMove={onMove}>

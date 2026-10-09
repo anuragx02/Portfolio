@@ -19,28 +19,29 @@ const tilt = (e: React.PointerEvent<HTMLElement>) => {
 };
 const untilt = (e: React.PointerEvent<HTMLElement>) => { const s = e.currentTarget.style; s.setProperty('--tx', '0deg'); s.setProperty('--ty', '0deg'); };
 
-export function WorkTile() {
+export function WorkTile({ids,sectionId='work',heading='Browse by type',label='WORK INDEX',n='01'}:{ids?:string[];sectionId?:string;heading?:string;label?:string;n?:string}={}) {
+  const scoped=ids?projects.filter(p=>ids.includes(p.id)):projects;
   const [filter, setFilter] = React.useState<string>('ALL');
   const [subtype, setSubtype] = React.useState('ALL');
-  const [view, setView] = React.useState<'grid' | 'list'>('grid');
+  const [view, setView] = React.useState<'grid' | 'list'>(ids?.length===1?'list':'grid');
   const [shown, setShown] = React.useState(projects.length);
   const [q, setQ] = React.useState('');
   const [open, setOpen] = React.useState<Project | null>(null);
-  const list = projects.filter((p) => (filter === 'ALL' || p.discipline === filter) && (subtype === 'ALL' || projectSubtype[p.id] === subtype) && (!q || (p.title + p.summary).toLowerCase().includes(q.toLowerCase())));
-  const subtypes = [...new Set(projects.filter(p=>p.discipline===filter).map(p=>projectSubtype[p.id]).filter(Boolean))];
+  const list = scoped.filter((p) => (filter === 'ALL' || p.discipline === filter) && (subtype === 'ALL' || projectSubtype[p.id] === subtype) && (!q || (p.title + p.summary).toLowerCase().includes(q.toLowerCase())));
+  const subtypes = [...new Set(scoped.filter(p=>p.discipline===filter).map(p=>projectSubtype[p.id]).filter(Boolean))];
   const ordered = filter === 'ALL' ? DISCIPLINES.flatMap(d=>list.filter(p=>p.discipline===d)) : list;
   const vis = ordered.slice(0, shown);
   const placeholderOnly = projects.every((p) => p.placeholder);
   return (
-    <div className="t t-work" id="work">
-      <p className="kicker"><b>01</b> / WORK INDEX · {projects.length} {projects.length === 1 ? 'PROJECT' : 'PROJECTS'}</p>
-      <h2 className="th">Browse by <em>type</em></h2>
+    <div className="t t-work" id={sectionId}>
+      <p className="kicker"><b>{n}</b> / {label} · {scoped.length} {scoped.length === 1 ? 'PROJECT' : 'PROJECTS'}</p>
+      <h2 className="th">{heading}</h2>
       <div className="wtools">
-        <div className="chips2" role="group" aria-label="Filter by media type">
+        {!ids && <div className="chips2" role="group" aria-label="Filter by media type">
           {['ALL', ...DISCIPLINES.filter(d=>projects.some(p=>p.discipline===d))].map((d) => (
             <button key={d} className={filter === d ? 'on' : ''} aria-pressed={filter === d} onClick={() => { setFilter(d); setSubtype('ALL'); setShown(projects.length); }}>{d}</button>
           ))}
-        </div>
+        </div>}
         <div className="wright">
           {projects.length > 20 && <input className="wsearch" placeholder="Search" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search projects" />}
           <div className="vt">
@@ -49,11 +50,11 @@ export function WorkTile() {
           </div>
         </div>
       </div>
-      {filter !== 'ALL' && subtypes.length > 0 && <div className="chips2" role="group" aria-label="Filter by subtype" style={{marginBottom:18}}>{['ALL',...subtypes].map(s=><button key={s} className={subtype===s?'on':''} aria-pressed={subtype===s} onClick={()=>{setSubtype(s);setShown(projects.length);}}>{s==='ALL'?'All '+filter.toLowerCase():s}</button>)}</div>}
+      {!ids && filter !== 'ALL' && subtypes.length > 0 && <div className="chips2" role="group" aria-label="Filter by subtype" style={{marginBottom:18}}>{['ALL',...subtypes].map(s=><button key={s} className={subtype===s?'on':''} aria-pressed={subtype===s} onClick={()=>{setSubtype(s);setShown(projects.length);}}>{s==='ALL'?'All '+filter.toLowerCase():s}</button>)}</div>}
       {vis.length === 0 && <p className="note">Nothing in this filter yet.</p>}
       <div className={`wgrid v-${view}`}>
         {vis.map((p, i) => (
-          <React.Fragment key={p.id}>{filter==='ALL' && (i===0 || vis[i-1].discipline!==p.discipline) && <h3 style={{gridColumn:'1 / -1',fontSize:24,margin:'18px 0 0'}}>{p.discipline}</h3>}<div className="project-entry"><button className={`wcard ${false ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
+          <React.Fragment key={p.id}>{!ids && filter==='ALL' && (i===0 || vis[i-1].discipline!==p.discipline) && <h3 style={{gridColumn:'1 / -1',fontSize:24,margin:'18px 0 0'}}>{p.discipline}</h3>}<div className="project-entry"><button className={`wcard ${false ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
             <span className="wcover">
               {p.cover ? <img src={p.cover} alt="" loading="lazy" style={p.podcastEmbed?{objectFit:"contain",background:"#16191c"}:undefined} /> : <i className="wart" />}
               {p.placeholder && <em className="ph">PLACEHOLDER</em>}

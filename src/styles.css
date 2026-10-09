@@ -520,3 +520,18 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .site-scene::after{background:linear-gradient(rgba(4,6,10,.16),rgba(4,6,10,.02) 55%,rgba(4,6,10,.18))}
 .site-scene::before{background:radial-gradient(circle at 35% 32%,rgba(154,183,194,.19),rgba(99,133,152,.09) 68%,transparent 70%);box-shadow:0 0 100px rgba(112,150,172,.10)}
 @media(max-width:760px){.site-scene{opacity:1}.site-scene .scene-grain{opacity:.85}.site-scene .scene-rim{opacity:.8}}
+
+/* Restore the original module float at 40 percent of its depth, tilt and fade. */
+@media(min-width:900px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .dash{perspective:1100px;perspective-origin:50% 35%}
+ .t-about,.t-evidence,.t-tool{animation:none;transform-origin:50% 50%;backface-visibility:hidden;will-change:transform,opacity}
+ .t-about,.t-tool{--float-sign:-1}.t-evidence{--float-sign:1}
+ @supports(animation-timeline:view()){
+  .t-about,.t-evidence,.t-tool{animation:module-float linear both;animation-timeline:view(block);animation-range:entry 0% exit 100%}
+ }
+}
+@keyframes module-float{
+ 0%{transform:translateZ(-100px) rotateX(-5.6deg) rotateY(calc(var(--float-sign,1)*1.2deg));opacity:.78}
+ 50%{transform:translateZ(0) rotateX(0) rotateY(0);opacity:1}
+ 100%{transform:translateZ(-100px) rotateX(5.6deg) rotateY(calc(var(--float-sign,1)*-1.2deg));opacity:.78}
+}

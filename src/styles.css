@@ -553,3 +553,20 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 @media(hover:none),(pointer:coarse),(max-width:899px),(prefers-reduced-motion:reduce){
  .cursor-halo{display:none!important}.btn,.hdr .pill{translate:none!important}.wcard,.wcard:hover{transform:none!important;translate:none!important}.wcover img{transform:none!important;transition:none!important}.wcard::after{display:none}
 }
+
+/* Dark forest by default; a masked duplicate reveals its bright planes only under the pointer. */
+.site-scene{background:radial-gradient(ellipse at 70% 14%,rgba(50,77,92,.22),transparent 43%),linear-gradient(#070a10,#0b141c 65%,#07090d)}
+.site-scene .scene-layer{filter:none}.site-scene .scene-haze,.site-scene .scene-orbit,.site-scene .scene-plane{opacity:.75}
+.site-scene::after{background:linear-gradient(rgba(4,6,10,.3),rgba(4,6,10,.08) 55%,rgba(4,6,10,.28))}
+.site-scene::before{background:radial-gradient(circle at 35% 32%,rgba(134,156,168,.10),rgba(78,105,123,.05) 68%,transparent 70%);box-shadow:0 0 85px rgba(94,124,141,.055)}
+.scene-reveal{display:none}
+@media(min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .scene-reveal{display:block;opacity:0;transition:opacity .25s;mask-image:radial-gradient(circle 200px at var(--light-x,-500px) var(--light-y,-500px),#000 0%,rgba(0,0,0,.95) 25%,rgba(0,0,0,.5) 55%,transparent 100%);background:radial-gradient(ellipse at 70% 14%,rgba(61,102,121,.35),transparent 50%),linear-gradient(#090f18,#122532 65%,#080f16)}
+ .scene-reveal.lit{opacity:1}.scene-reveal .scene-layer{filter:brightness(2.25) saturate(1.12)}.scene-reveal .scene-haze,.scene-reveal .scene-orbit,.scene-reveal .scene-plane{opacity:1}
+ .scene-reveal::after{background:linear-gradient(rgba(4,6,10,.08),transparent 55%,rgba(4,6,10,.1))}
+ .flashlight-ready,.flashlight-ready *{cursor:none!important}
+ .flashlight-ready.flashlight-form,.flashlight-ready input,.flashlight-ready textarea,.flashlight-ready [contenteditable=true]{cursor:text!important}.flashlight-ready select{cursor:auto!important}
+ .cursor-halo{width:12px;height:12px;margin:-6px;border:1px solid rgba(239,249,255,.75);background:rgba(227,244,255,.4);box-shadow:0 0 12px rgba(214,242,255,.5),0 0 32px rgba(170,215,239,.16)}
+ .cursor-halo.over-link{background:rgba(243,250,255,.8);border-color:#fff}.flashlight-form .cursor-halo{opacity:0}
+}
+@media(max-width:760px){.site-scene{opacity:.85}.site-scene .scene-grain{opacity:.65}.site-scene .scene-rim{opacity:.6}}

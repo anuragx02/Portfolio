@@ -21,9 +21,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-  </head>
+  <style>
+.boot-scene{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#24414b 0,#10242e 25%,#071118 70%);color:#dfeaf0;font:14px system-ui;overflow:hidden}.boot-scene:before{content:'';position:absolute;inset:40% -10% 0;background:#050e14;clip-path:polygon(0 100%,0 80%,10% 35%,15% 78%,23% 10%,30% 75%,37% 40%,42% 83%,51% 0,60% 75%,65% 30%,72% 84%,83% 20%,91% 74%,100% 43%,100% 100%)}.boot-copy{z-index:1;text-align:center;letter-spacing:.12em}.boot-moon{display:block;margin:0 auto 28px;width:38px;height:38px;border-radius:50%;background:#d7e9ee;box-shadow:0 0 55px 20px #9abfcb33}.boot-copy small{display:block;margin-top:14px;color:#91aebc;font-size:11px;letter-spacing:.04em}.boot-status{position:fixed;bottom:20px;right:20px;z-index:100;border:1px solid #536d7a66;border-radius:24px;background:#0b1823e8;color:#cadde5;padding:10px 15px;font:11px system-ui;cursor:pointer;box-shadow:0 0 25px #93cbdf14}.boot-status:before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#d7e9ee;box-shadow:0 0 10px #bde4ee;margin-right:8px}
+</style>
+</head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="boot-scene" role="status"><div class="boot-copy"><span class="boot-moon" aria-hidden="true"></span>Entering the forest<small>Gathering the light...</small></div></div></div>
+    <button class="boot-status" id="boot-status" aria-label="Dismiss loading indicator" hidden>Lighting the forest</button>
+    <script>
+    (()=>{const root=document.getElementById('root'),status=document.getElementById('boot-status');let observer;const finish=()=>{status?.remove();observer?.disconnect();};status?.addEventListener('click',finish);const check=()=>{const hero=root.querySelector('img[src="/portrait-user-selected.jpg"]');if(!hero)return;observer.disconnect();if(hero.complete){finish();return;}status.hidden=false;hero.addEventListener('load',finish,{once:true});hero.addEventListener('error',finish,{once:true});};observer=new MutationObserver(check);observer.observe(root,{childList:true,subtree:true});check();})();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

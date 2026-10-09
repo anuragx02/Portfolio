@@ -15,8 +15,8 @@ export const skills = [
 ];
 
 export const toolGroups = [
-  { id: 'video', label: 'AI Video', note: 'Text and image to film', tools: ['Google Flow', 'Veo', 'Kling', 'Seedance', 'Runway', 'Luma Dream Machine', 'Hailuo', 'Sora'] },
-  { id: 'images', label: 'AI Images', note: 'Stills, characters, concepts', tools: ['Midjourney', 'Nano Banana', 'ChatGPT Images', 'Flux', 'Ideogram', 'Leonardo', 'Magnific', 'Firefly'] },
+  { id: 'video', label: 'AI Video', note: 'Text and image to film', tools: ['Google Flow', 'Veo', 'Kling', 'Seedance', 'Runway', 'Luma Dream Machine', 'Hailuo'] },
+  { id: 'images', label: 'AI Images', note: 'Stills, characters, concepts', tools: ['Nano Banana', 'ChatGPT Images', 'Flux', 'Ideogram', 'Leonardo', 'Magnific', 'Firefly'] },
   { id: 'llm', label: 'LLMs & Research', note: 'Ideas, scripts, synthesis', tools: ['Gemini', 'ChatGPT', 'Claude', 'Grok', 'Perplexity', 'NotebookLM', 'Google AI Studio'] },
   { id: 'voice', label: 'Voice & Music', note: 'Narration, sound, score', tools: ['ElevenLabs', 'Suno', 'Udio'] },
   { id: 'edit', label: 'Editing & Design', note: 'Cut, grade, finish', tools: ['CapCut', 'Instagram Edits', 'VN', 'Canva'] },

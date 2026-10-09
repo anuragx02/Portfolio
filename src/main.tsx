@@ -146,7 +146,7 @@ function Orbit() {
   return (
     <div className="t t-orbit" id="orbit">
       <div>
-        <SecHead n="05" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
+        <SecHead n="06" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
         <div className="orbit">
           <div className="stage" ref={stage}>
             {ok && near ? (
@@ -343,13 +343,17 @@ function App() {
       <main>
         <Hero />
         <div className="wrap dash">
-          <About />
-          <Evidence />
-          <WorkTile />
+          <WorkTile ids={['bmw-cinematic']} sectionId="work" n="01" label="VIDEOS / PRODUCT FILM" heading="Film and motion" />
+          <WorkTile ids={['stepwell-carousel']} sectionId="visual-stories" n="02" label="IMAGES / CAROUSEL" heading="Images and visual stories" />
           <CoverStories />
+          <WorkTile ids={['sookha','tola','saanjh','mewform']} sectionId="brands" n="03" label="WEBSITES / D2C BRAND CONCEPTS" heading="Research and strategy" />
+          <Evidence />
+          <WorkTile ids={['brain-explained']} sectionId="audio" n="04" label="AUDIO / PODCAST" heading="Sound and conversation" />
+          <WorkTile ids={['light-mood-lab']} sectionId="creative-lab" n="05" label="WEB / INTERACTIVE STUDY" heading="Creative lab" />
           <Orbit />
           <Toolkit />
           <Contact />
+          <About />
         </div>
       </main>
       <footer className="ftr"><div className="wrap"><span>© 2026 {profile.name}</span><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top ↑</button></div></footer>

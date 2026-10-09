@@ -81,7 +81,7 @@ function Hero() {
           </div>
         </div>
         <div className="lumen" aria-hidden="true"><div className="cinema-atmosphere"><i className="cinema-beam beam-one" /><i className="cinema-beam beam-two" />{Array.from({length:12},(_,i)=><i className="cinema-dust" key={i} style={{left:`${8+(i*19)%84}%`,top:`${12+(i*31)%78}%`,animationDelay:`-${i*2.7}s`,animationDuration:`${22+i%4*5}s`}} />)}</div>
-          <div className="lumen-core"><img className="lc-portrait" src="/portrait-user-selected.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
+          <div className="lumen-core"><img className="lc-portrait" src="/portrait-user-selected.jpg" width="896" height="1200" fetchPriority="high" decoding="async" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
           <div className="tag t1">AI VIDEO</div>
           <div className="tag t2">AI IMAGES</div>
           <div className="tag t3">WEBSITES</div>
@@ -294,19 +294,27 @@ function App() {
     const setup=()=>{
       dispose(); if(!mq.matches)return;
       const halo=document.createElement('div');halo.className='cursor-halo';halo.setAttribute('aria-hidden','true');document.body.appendChild(halo);
-      const root=document.documentElement;const scene=document.querySelector('.site-scene');const light=scene?.cloneNode(true) as HTMLElement|undefined;if(light){light.classList.add('scene-reveal');light.setAttribute('aria-hidden','true');scene?.after(light);}
-      let raf=0,x=0,y=0,tx=0,ty=0,started=false,active:HTMLElement|null=null;
-      const tick=()=>{raf=0;x+=(tx-x)*.28;y+=(ty-y)*.28;halo.style.transform=`translate3d(${x}px,${y}px,0)`;light?.style.setProperty('--light-x',`${x}px`);light?.style.setProperty('--light-y',`${y}px`);if(started)root.classList.add('flashlight-ready');if(Math.abs(tx-x)+Math.abs(ty-y)>.2)raf=requestAnimationFrame(tick);};
+      const root=document.documentElement;const scene=document.querySelector('.site-scene');
+      const light=document.createElement('canvas');light.className='forest-light';light.width=400;light.height=400;light.setAttribute('aria-hidden','true');scene?.after(light);
+      const ctx=light.getContext('2d');let ready=false;let w=innerWidth,h=innerHeight;
+      const planes=[...document.querySelectorAll<HTMLElement>('.site-scene .scene-layer')].map((el,i)=>({el,travel:[26,60,100,145,135][i],image:new Image(),bitmap:document.createElement('canvas')}));
+      const raster=()=>{w=innerWidth;h=innerHeight;for(const p of planes){p.bitmap.width=Math.ceil(w*1.08);p.bitmap.height=Math.ceil(h*1.14);const c=p.bitmap.getContext('2d');if(c){c.filter='brightness(2.25) saturate(1.12)';c.drawImage(p.image,0,0,p.bitmap.width,p.bitmap.height);}}ready=true;};
+      Promise.all(planes.map(p=>new Promise<void>(resolve=>{const url=getComputedStyle(p.el).backgroundImage.slice(5,-2);p.image.onload=()=>resolve();p.image.onerror=()=>resolve();p.image.src=url;}))).then(()=>{if(planes.every(p=>p.image.naturalWidth))raster();});
+      const draw=(cx:number,cy:number)=>{if(!ready||!ctx)return;ctx.clearRect(0,0,400,400);const g=ctx.createLinearGradient(0,0,0,400);g.addColorStop(0,'#172c39');g.addColorStop(1,'#0b1823');ctx.fillStyle=g;ctx.fillRect(0,0,400,400);const progress=scrollY/Math.max(1,root.scrollHeight-innerHeight);for(const p of planes){ctx.drawImage(p.bitmap,w*-.04-cx+200,h*-.07-p.travel*progress-cy+200);}ctx.globalCompositeOperation='destination-in';const mask=ctx.createRadialGradient(200,200,0,200,200,200);mask.addColorStop(0,'#000');mask.addColorStop(.25,'rgba(0,0,0,.95)');mask.addColorStop(.55,'rgba(0,0,0,.5)');mask.addColorStop(1,'transparent');ctx.fillStyle=mask;ctx.fillRect(0,0,400,400);ctx.globalCompositeOperation='source-over';light.style.transform=`translate3d(${cx-200}px,${cy-200}px,0)`;};
+      let idleTimer=0;let raf=0,x=0,y=0,tx=0,ty=0,started=false,active:HTMLElement|null=null;
+      const tick=()=>{raf=0;x+=(tx-x)*.28;y+=(ty-y)*.28;halo.style.transform=`translate3d(${x}px,${y}px,0)`;draw(x,y);if(started)root.classList.add('flashlight-ready');if(Math.abs(tx-x)+Math.abs(ty-y)>.2)raf=requestAnimationFrame(tick);};
       const reset=()=>{if(active){active.style.removeProperty('--mag-x');active.style.removeProperty('--mag-y');active=null;}};
-      const move=(e:PointerEvent)=>{if(e.pointerType!=='mouse')return;tx=e.clientX;ty=e.clientY;if(!started){x=tx;y=ty;started=true;}halo.classList.add('visible');light?.classList.add('lit');root.classList.toggle('flashlight-form',!!(e.target as Element).closest('input,textarea,select,[contenteditable=true]')); 
+      const move=(e:PointerEvent)=>{if(e.pointerType!=='mouse')return;tx=e.clientX;ty=e.clientY;if(!started){x=tx;y=ty;started=true;}halo.classList.add('visible');light?.classList.add('lit');root.classList.remove('effects-idle');clearTimeout(idleTimer);idleTimer=window.setTimeout(()=>root.classList.add('effects-idle'),1200);root.classList.toggle('flashlight-form',!!(e.target as Element).closest('input,textarea,select,[contenteditable=true]')); 
         const target=(e.target as Element).closest<HTMLElement>('a,button');halo.classList.toggle('over-link',!!target);
         const magnetic=(e.target as Element).closest<HTMLElement>('.btn,.hdr .pill');if(active!==magnetic)reset();
         if(magnetic){active=magnetic;const r=magnetic.getBoundingClientRect();active.style.setProperty('--mag-x',`${Math.max(-4,Math.min(4,(tx-r.left-r.width/2)*.06))}px`);active.style.setProperty('--mag-y',`${Math.max(-3,Math.min(3,(ty-r.top-r.height/2)*.08))}px`);}
         if(!raf)raf=requestAnimationFrame(tick);
       };
-      const leave=()=>{halo.classList.remove('visible');light?.classList.remove('lit');root.classList.remove('flashlight-ready','flashlight-form');started=false;reset();};
+      const leave=()=>{halo.classList.remove('visible');light?.classList.remove('lit');root.classList.remove('flashlight-ready','flashlight-form');root.classList.add('effects-idle');started=false;reset();};
+      const visibility=()=>{root.classList.toggle('effects-idle',document.hidden);if(document.hidden)leave();};
+      document.addEventListener('visibilitychange',visibility);window.addEventListener('resize',raster);
       document.addEventListener('pointermove',move,{passive:true});document.addEventListener('pointerleave',leave);window.addEventListener('blur',leave);
-      dispose=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerleave',leave);window.removeEventListener('blur',leave);if(raf)cancelAnimationFrame(raf);reset();halo.remove();light?.remove();root.classList.remove('flashlight-ready','flashlight-form');};
+      dispose=()=>{document.removeEventListener('visibilitychange',visibility);window.removeEventListener('resize',raster);document.removeEventListener('pointermove',move);document.removeEventListener('pointerleave',leave);window.removeEventListener('blur',leave);if(raf)cancelAnimationFrame(raf);clearTimeout(idleTimer);reset();halo.remove();light?.remove();root.classList.remove('flashlight-ready','flashlight-form');};
     };
     setup();mq.addEventListener('change',setup);return()=>{dispose();mq.removeEventListener('change',setup);};
   }, []);

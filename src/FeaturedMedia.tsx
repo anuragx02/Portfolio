@@ -11,8 +11,11 @@ const rawMedia = projects.flatMap(p => {
 const qualityOrder = ["BMW","Cover Stories","Sookha","Below the surface","Tola","Light / mood","Saanjh","Mewform"];
 const ranked = [...projects].sort((a,b)=>qualityOrder.findIndex(x=>a.title.startsWith(x))-qualityOrder.findIndex(x=>b.title.startsWith(x)));
 const leads = ranked.map(p=>rawMedia.find(m=>m.title===p.title)).filter(Boolean) as typeof rawMedia;
-const media = [...leads,...rawMedia.filter(m=>!leads.includes(m))];
-for(let i=1;i<=10;i++){ const src=`/covers/issue-${String(i).padStart(2,'0')}.jpg`;if(!media.some(x=>x.src===src))media.push({src,title:`Cover Stories · Issue ${String(i).padStart(2,'0')}`,subtitle:'Fictional editorial cover',link:undefined,issue:i,video:''});}
+const media = [...leads];
+const extras = rawMedia.filter(m=>!leads.includes(m));
+for(let i=1;i<=10;i++){ const src=`/covers/issue-${String(i).padStart(2,'0')}.jpg`;if(!media.some(x=>x.src===src))extras.push({src,title:`Cover Stories · Issue ${String(i).padStart(2,'0')}`,subtitle:'Fictional editorial cover',link:undefined,issue:i,video:''});}
+const buckets = ranked.map(p=>extras.filter(m=>m.title===p.title || (p.title.startsWith("Cover Stories") && m.title.startsWith("Cover Stories"))));
+for(let i=0;i<Math.max(...buckets.map(b=>b.length));i++)for(const bucket of buckets)if(bucket[i])media.push(bucket[i]);
 export function FeaturedMedia(){
  const [paused,setPaused]=React.useState(false);const windowRef=React.useRef<HTMLDivElement>(null);const move=(direction:number)=>{setPaused(true);windowRef.current?.scrollBy({left:direction*(innerWidth<760?308:398),behavior:"smooth"});};const [playing,setPlaying]=React.useState(false);
  return <section className="featured-media" aria-label="Featured media gallery"><div className="film-heading"><p className="kicker"><b>FEATURED MEDIA</b> / FILMS · IMAGES · EXPERIMENTS</p><button className="pill" onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></div><div className="gallery-controls"><button className="pill" aria-label="Previous media" onClick={()=>move(-1)}>←</button><button className="pill" aria-label="Next media" onClick={()=>move(1)}>→</button></div><div className="media-window" ref={windowRef}><div className={`media-track ${paused||playing?'paused':''}`}>

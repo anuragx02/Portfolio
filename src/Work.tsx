@@ -19,7 +19,7 @@ const tilt = (e: React.PointerEvent<HTMLElement>) => {
 };
 const untilt = (e: React.PointerEvent<HTMLElement>) => { const s = e.currentTarget.style; s.setProperty('--tx', '0deg'); s.setProperty('--ty', '0deg'); };
 
-export function WorkTile({ids,sectionId='work',heading='Browse by type',label='WORK INDEX',n='01'}:{ids?:string[];sectionId?:string;heading?:string;label?:string;n?:string}={}) {
+export function WorkTile({ids,sectionId='work',heading='Browse by type',label='WORK INDEX',n='01',children}:{ids?:string[];sectionId?:string;heading?:string;label?:string;n?:string;children?:React.ReactNode}={}) {
   const scoped=ids?projects.filter(p=>ids.includes(p.id)):projects;
   const [filter, setFilter] = React.useState<string>('ALL');
   const [subtype, setSubtype] = React.useState('ALL');
@@ -69,6 +69,7 @@ export function WorkTile({ids,sectionId='work',heading='Browse by type',label='W
         )}
       </div>
       {placeholderOnly && <p className="note wnote">These are tagged placeholders. Real projects replace them as we build them together.</p>}
+      {children}
       {open && <Storyboard p={open} onClose={() => setOpen(null)} />}
     </div>
   );

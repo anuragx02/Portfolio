@@ -81,7 +81,7 @@ function Hero() {
           </div>
         </div>
         <div className="lumen" aria-hidden="true"><div className="cinema-atmosphere"><i className="cinema-beam beam-one" /><i className="cinema-beam beam-two" />{Array.from({length:12},(_,i)=><i className="cinema-dust" key={i} style={{left:`${8+(i*19)%84}%`,top:`${12+(i*31)%78}%`,animationDelay:`-${i*2.7}s`,animationDuration:`${22+i%4*5}s`}} />)}</div>
-          <div className="lumen-core"><img className="lc-portrait" src="/portrait-choice-c.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
+          <div className="lumen-core"><img className="lc-portrait" src="/portrait-angled-charcoal.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
           <div className="tag t1">AI VIDEO</div>
           <div className="tag t2">AI IMAGES</div>
           <div className="tag t3">WEBSITES</div>

@@ -289,6 +289,28 @@ function Progress() {
 
 function App() {
   React.useEffect(() => {
+    const mq=matchMedia('(min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
+    let dispose=()=>{};
+    const setup=()=>{
+      dispose(); if(!mq.matches)return;
+      const halo=document.createElement('div');halo.className='cursor-halo';halo.setAttribute('aria-hidden','true');document.body.appendChild(halo);
+      let raf=0,x=0,y=0,tx=0,ty=0,started=false,active:HTMLElement|null=null;
+      const tick=()=>{raf=0;x+=(tx-x)*.28;y+=(ty-y)*.28;halo.style.transform=`translate3d(${x}px,${y}px,0)`;if(Math.abs(tx-x)+Math.abs(ty-y)>.2)raf=requestAnimationFrame(tick);};
+      const reset=()=>{if(active){active.style.removeProperty('--mag-x');active.style.removeProperty('--mag-y');active=null;}};
+      const move=(e:PointerEvent)=>{if(e.pointerType!=='mouse')return;tx=e.clientX;ty=e.clientY;if(!started){x=tx;y=ty;started=true;}halo.classList.add('visible');
+        const target=(e.target as Element).closest<HTMLElement>('a,button');halo.classList.toggle('over-link',!!target);
+        const magnetic=(e.target as Element).closest<HTMLElement>('.btn,.hdr .pill');if(active!==magnetic)reset();
+        if(magnetic){active=magnetic;const r=magnetic.getBoundingClientRect();active.style.setProperty('--mag-x',`${Math.max(-4,Math.min(4,(tx-r.left-r.width/2)*.06))}px`);active.style.setProperty('--mag-y',`${Math.max(-3,Math.min(3,(ty-r.top-r.height/2)*.08))}px`);}
+        if(!raf)raf=requestAnimationFrame(tick);
+      };
+      const leave=()=>{halo.classList.remove('visible');reset();};
+      document.addEventListener('pointermove',move,{passive:true});document.addEventListener('pointerleave',leave);window.addEventListener('blur',leave);
+      dispose=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerleave',leave);window.removeEventListener('blur',leave);if(raf)cancelAnimationFrame(raf);reset();halo.remove();};
+    };
+    setup();mq.addEventListener('change',setup);return()=>{dispose();mq.removeEventListener('change',setup);};
+  }, []);
+
+  React.useEffect(() => {
     /* Background-only parallax: no moving content or layout reads on scroll. */
     const root=document.documentElement;
     if(CSS.supports("animation-timeline: scroll()")) return;

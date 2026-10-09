@@ -20,5 +20,5 @@ export const toolGroups = [
   { id: 'llm', label: 'LLMs & Research', note: 'Ideas, scripts, synthesis', tools: ['Gemini', 'ChatGPT', 'Claude', 'Grok', 'Perplexity', 'NotebookLM', 'Google AI Studio'] },
   { id: 'voice', label: 'Voice & Music', note: 'Narration, sound, score', tools: ['ElevenLabs', 'Suno', 'Udio'] },
   { id: 'edit', label: 'Editing & Design', note: 'Cut, grade, finish', tools: ['CapCut', 'Instagram Edits', 'VN', 'Canva'] },
-  { id: 'build', label: 'Build & Ship', note: 'Sites and deployment', tools: ['React', 'Vite', 'Python', 'GitHub', 'Vercel', 'Netlify'] },
+  { id: 'build', label: 'Technical Skills', note: 'Web interfaces and deployment', tools: ['React', 'Vite', 'GitHub', 'Vercel', 'Netlify'] },
 ];

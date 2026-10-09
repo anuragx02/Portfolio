@@ -280,14 +280,15 @@ function SecHead({ n, label, title, note }: { n: string; label: string; title: R
 function Progress() {
   const [p, setP] = React.useState(0);
   React.useEffect(() => {
-    const on = () => { const d = document.documentElement; setP(d.scrollTop / Math.max(1, d.scrollHeight - d.clientHeight)); };
-    on(); window.addEventListener('scroll', on, { passive: true });
-    return () => window.removeEventListener('scroll', on);
+    let frame=0;const update=()=>{frame=0;const d=document.documentElement;setP(d.scrollTop/Math.max(1,d.scrollHeight-d.clientHeight));};const on=()=>{if(!frame)frame=requestAnimationFrame(update);};
+    update();window.addEventListener('scroll',on,{passive:true});return()=>{window.removeEventListener('scroll',on);if(frame)cancelAnimationFrame(frame);};
   }, []);
   return <div className="progress" style={{ transform: `scaleX(${p})` }} />;
 }
 
 function App() {
+  React.useEffect(()=>{const gallery=document.querySelector('.featured-media');if(!gallery)return;const io=new IntersectionObserver(([e])=>gallery.classList.toggle('gallery-offscreen',!e.isIntersecting),{rootMargin:'100px'});io.observe(gallery);return()=>io.disconnect();},[]);
+
   React.useEffect(() => {
     const mq=matchMedia('(min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
     let dispose=()=>{};

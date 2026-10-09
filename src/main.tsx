@@ -52,10 +52,8 @@ function Header() {
   );
 }
 
-const Cinematic = React.lazy(() => import("./Cinematic"));
+
 function Hero() {
-  const [cinema,setCinema]=React.useState(false);
-  React.useEffect(()=>{ if(matchMedia("(prefers-reduced-motion: reduce)").matches || matchMedia("(pointer: coarse)").matches || innerWidth < 900 || ((navigator as Navigator & {deviceMemory?:number}).deviceMemory ?? 8) < 4) return; const id=window.setTimeout(()=>setCinema(true),800);return()=>clearTimeout(id);},[]);
   const ref = React.useRef<HTMLElement>(null);
   const onMove = (e: React.PointerEvent<HTMLElement>) => {
     const el = ref.current; if (!el || e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -68,7 +66,7 @@ function Hero() {
   return (
     <section id="top" className="hero" ref={ref} onPointerMove={onMove} onPointerLeave={() => { const el=ref.current; if(el) for(const key of ["--px","--py","--rx","--ry"]) el.style.setProperty(key,key.includes("r") ? "0deg" : "0"); }}> 
       <div className="hero-bg" aria-hidden="true"><HeroVideo /><i className="blob b1" /><i className="blob b2" /><i className="grid" /></div>
-      {cinema && <React.Suspense fallback={null}><Cinematic /></React.Suspense>}<div className="wrap hero-grid">
+      <div className="wrap hero-grid">
         <div className="hero-copy">
           <p className="kicker"><span className="live" /> AI CREATIVE · CONTENT · DIGITAL EXPERIENCES</p>
           <h1>
@@ -291,45 +289,14 @@ function Progress() {
 
 function App() {
   React.useEffect(() => {
-    /* Scroll-depth: tiles drift in depth as they cross the viewport. Desktop pointer devices only. */
-    const mq = matchMedia('(min-width: 900px) and (not (pointer: coarse)) and (prefers-reduced-motion: no-preference)');
-    if (!mq.matches) return;
-    document.documentElement.classList.add('depth');
-    let raf = 0;
-    type T = { el: HTMLElement; cur: number; tgt: number };
-    const tiles: T[] = Array.from(document.querySelectorAll<HTMLElement>('.dash > .t')).map((el) => ({ el, cur: 0, tgt: 0 }));
-    const root = document.documentElement;
-    let sy = scrollY, syT = scrollY;
-    const measure = () => {
-      /* read phase: all layout reads first, no writes in between */
-      const h = innerHeight;
-      syT = scrollY;
-      for (const t of tiles) {
-        const r = t.el.getBoundingClientRect();
-        t.tgt = Math.max(-1, Math.min(1, (r.top + r.height / 2 - h / 2) / (h / 2 + Math.min(r.height, h) / 2)));
-      }
-    };
-    let last = 0;
-    const tick = (now = performance.now()) => {
-      raf = 0;
-      const dt = last ? Math.min(64, now - last) : 16; last = now;
-      /* ease toward the scroll-driven target (frame-rate independent enough at ~60fps) */
-      const k = 1 - Math.exp(-dt / 85);
-      let moving = false;
-      sy += (syT - sy) * k;
-      if (Math.abs(syT - sy) > 0.4) moving = true; else sy = syT;
-      root.style.setProperty('--sy', sy.toFixed(1));
-      for (const t of tiles) {
-        const diff = t.tgt - t.cur;
-        if (Math.abs(diff) > 0.0008) { t.cur += diff * k; moving = true; } else t.cur = t.tgt;
-        t.el.style.setProperty('--d', t.cur.toFixed(4));
-      }
-      if (moving) raf = requestAnimationFrame(tick); else last = 0;
-    };
-    const on = () => { measure(); if (!raf) raf = requestAnimationFrame(tick); };
-    measure(); sy = syT; tiles.forEach((t) => (t.cur = t.tgt)); tick();
-    addEventListener('scroll', on, { passive: true }); addEventListener('resize', on);
-    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); root.classList.remove('depth'); if (raf) cancelAnimationFrame(raf); };
+    /* Background-only parallax: no moving content or layout reads on scroll. */
+    const root=document.documentElement;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+    let raf=0;
+    const update=()=>{raf=0;const range=Math.max(1,root.scrollHeight-innerHeight);const p=reduce.matches?0:Math.min(1,scrollY/range);root.style.setProperty('--scene-progress',p.toFixed(4));};
+    const on=()=>{if(!raf)raf=requestAnimationFrame(update);};
+    update();addEventListener('scroll',on,{passive:true});addEventListener('resize',on);reduce.addEventListener('change',on);
+    return()=>{removeEventListener('scroll',on);removeEventListener('resize',on);reduce.removeEventListener('change',on);if(raf)cancelAnimationFrame(raf);};
   }, []);
   React.useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.1 });
@@ -338,7 +305,7 @@ function App() {
   }, []);
   return (
     <>
-      <Progress />
+      <div className="site-scene" aria-hidden="true"><i className="scene-layer scene-haze" /><i className="scene-layer scene-orbit" /><i className="scene-layer scene-plane" /><i className="scene-layer scene-grain" /></div><Progress />
       <Header />
       <main>
         <Hero />

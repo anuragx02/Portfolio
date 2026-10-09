@@ -314,14 +314,6 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
   .t-tool .tools{grid-template-columns:1fr}
 }
 
-/* 3D depth */
-.depth .dash>.t:nth-child(even){--sk:-1}
-.depth .dash{perspective:1100px;perspective-origin:50% 35%}
-.depth .dash>.t{--d:0;transform:translateZ(calc(var(--d)*var(--d)*-250px)) rotateX(calc(var(--d)*-14deg)) rotateY(calc(var(--d)*var(--sk,1)*3deg));opacity:calc(1 - var(--d)*var(--d)*.55);will-change:transform,opacity;backface-visibility:hidden;transform-style:preserve-3d}
-.depth .hero-copy{transform:translate3d(0,calc(var(--sy,0)*-.1px),0)}
-.depth .lumen{translate:0 calc(var(--sy,0)*-.18px)}
-.depth .hero-bg{transform:translate3d(0,calc(var(--sy,0)*.25px),0)}
-
 /* hero sphere reacts to cursor */
 .lumen-core{background:radial-gradient(circle at calc(32% + var(--px,0)*22%) calc(28% + var(--py,0)*22%),rgba(255,255,255,.9),transparent 22%),conic-gradient(from calc(210deg + var(--px,0)*40deg),var(--c1),var(--c2),var(--c3),var(--c1))!important;translate:calc(var(--px,0)*22px) calc(var(--py,0)*16px);transition:transform .25s ease-out,translate .25s ease-out}
 .lumen .tag{translate:calc(var(--px,0)*-18px) calc(var(--py,0)*-12px);transition:translate .3s ease-out}
@@ -342,7 +334,7 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 @keyframes flipin{from{transform:translateY(0) rotateY(-70deg)}}
 @media(prefers-reduced-motion:reduce){.sb-p,.sb-p.on:not(.flip){transition:none;animation:none}.wcard{transform:none!important}}
 .hero-bg{-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
-.depth .hero-bg{transform:translate3d(0,calc(var(--sy,0)*.12px),0)}
+
 
 /* Original film player: uncropped 16:9, poster first, hosting-independent source. */
 .featured-film{border:1px solid var(--line2);border-radius:20px;overflow:hidden;background:var(--ink2);box-shadow:0 26px 80px rgba(0,0,0,.35)}
@@ -479,3 +471,15 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .cinema-atmosphere{background:radial-gradient(ellipse at 52% 44%,rgba(22,24,28,.35),transparent 65%)}.cinema-beam{background:linear-gradient(90deg,transparent,rgba(100,106,118,.1) 46%,rgba(155,163,177,.14) 53%,transparent)}.lumen-core{box-shadow:0 0 0 1px rgba(130,135,146,.2),0 24px 90px #030906,0 0 70px rgba(22,24,28,.3)}
 
 .cinema-dust{background:#d7d9df;box-shadow:0 0 5px rgba(210,214,223,.35)}.cinema-canvas{opacity:.7}
+
+/* Four monochrome depth planes. The background moves; content stays anchored. */
+#root{isolation:isolate}.site-scene{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:#07080a;contain:paint}
+.scene-layer{position:absolute;inset:-100px;will-change:transform;pointer-events:none}
+.scene-haze{background:radial-gradient(ellipse at 12% 25%,rgba(130,135,144,.13),transparent 45%),radial-gradient(ellipse at 90% 82%,rgba(92,99,111,.11),transparent 45%);transform:translate3d(0,calc(var(--scene-progress,0)*-18px),0)}
+.scene-orbit{inset:-15%;border:1px solid rgba(215,220,228,.045);border-radius:50%;width:110vw;height:150vh;rotate:-24deg;left:25%;top:12%;box-shadow:0 0 0 100px rgba(204,210,221,.012),0 0 0 230px rgba(204,210,221,.012);transform:translate3d(0,calc(var(--scene-progress,0)*-42px),0)}
+.scene-plane{background:linear-gradient(124deg,transparent 25%,rgba(173,180,190,.045) 25.1%,rgba(173,180,190,.016) 47%,transparent 47.1%),linear-gradient(34deg,transparent 65%,rgba(173,180,190,.018) 65.1%,transparent 82%);transform:translate3d(0,calc(var(--scene-progress,0)*-76px),0)}
+.scene-grain{opacity:.13;background-image:radial-gradient(rgba(215,220,230,.4) .6px,transparent .8px);background-size:91px 83px;mask-image:linear-gradient(transparent,#000 20%,#000 75%,transparent);transform:translate3d(0,calc(var(--scene-progress,0)*-110px),0)}
+.hero-bg::before,.hero .blob{display:none}.hero-bg::after{opacity:.35}.cinema-atmosphere{opacity:.45}.cinema-beam,.cinema-dust{animation:none}
+.dash>.t,.t-work,.featured-media,.reel-wrap{transform:none!important;translate:none!important;opacity:1!important;will-change:auto;transition-property:border-color,background,box-shadow}
+@media(max-width:760px){.scene-orbit{display:none}.scene-layer{will-change:auto}.scene-plane{opacity:.6}.scene-grain{opacity:.08}}
+@media(prefers-reduced-motion:reduce){.scene-layer{transform:none!important;will-change:auto}}

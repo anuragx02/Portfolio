@@ -71,7 +71,7 @@ export function DenoiseTile() {
         <input id="den-r" type="range" min={0} max={STEPS} value={step} onChange={(e) => setStep(+e.target.value)} />
         <button className="btn btn-ghost" onClick={() => { setPiece((p) => (p + 1) % PIECES.length); setStep(0); played.current = true; }}><Shuffle size={14} /> Next piece</button>
       </div>
-      <p className="note den-note">Real pieces from Cover Stories, clearing from noise step by step - the way diffusion builds an image.</p>
+      <p className="note den-note">A visual simulation: finished Cover Stories images blend from random noise to the final artwork. These are not saved diffusion or generation steps.</p>
     </div>
   );
 }

@@ -86,6 +86,22 @@ export const realProjects: Project[] = [{
   id: 'cover-stories', title: 'Cover Stories - ten nights, ten issues', discipline: 'AI Images', year: '2026',
   summary: 'Ten finished editorial covers from a fictional city after dark. Open the collection.',
   cover: '/covers/issue-05.jpg', readerIssue: 1, panels: [],
+}, {
+  id: 'stepwell-carousel', title: 'Below the surface - why does a well need stairs?', discipline: 'Social', year: '2026',
+  summary: 'A five-frame illustrated history carousel, made one image at a time.',
+  cover: '/social/stepwells/frame-01.jpg', link: '/social/stepwells/', panels: [
+    {caption: 'The question: why does a well need stairs?', image: '/social/stepwells/frame-01.jpg'},
+    {caption: 'Changing water levels: steps reach different depths.', image: '/social/stepwells/frame-02.jpg'},
+    {caption: 'Dry months and monsoons change the descent.', image: '/social/stepwells/frame-03.jpg'},
+    {caption: 'Water, shade and gathering places.', image: '/social/stepwells/frame-04.jpg'},
+    {caption: 'Rani-ki-Vav: the inverted-temple idea. Craft-detail illustration, not a site photograph.', image: '/social/stepwells/frame-05.jpg'},
+  ],
+}, {
+  id: 'light-mood-lab', title: 'Light / mood lab', discipline: 'Creative AI', year: '2026',
+  summary: 'One shape, three lighting controls. A hands-on study in visual mood.',
+  cover: '/experiments/light-lab/cover.svg', link: '/experiments/light-lab/', panels: [
+    {caption: 'Move the light, change the mood. Direction, softness and colour respond live in the browser.', image: '/experiments/light-lab/cover.svg'},
+  ],
 }];
 
 export const placeholderProjects: Project[] = [

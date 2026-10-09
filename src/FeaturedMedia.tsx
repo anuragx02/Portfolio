@@ -8,7 +8,9 @@ const rawMedia = projects.flatMap(p => {
   if(p.film) rows.unshift({src:p.film.poster || '',title:p.title,subtitle:'40-second cinematic concept · Play with sound controls',link:p.link,issue:undefined,video:p.film.src || ''});
   return rows;
 });
-const leads = projects.map(p=>rawMedia.find(m=>m.title===p.title)).filter(Boolean) as typeof rawMedia;
+const qualityOrder = ["BMW","Cover Stories","Sookha","Below the surface","Tola","Light / mood","Saanjh","Mewform"];
+const ranked = [...projects].sort((a,b)=>qualityOrder.findIndex(x=>a.title.startsWith(x))-qualityOrder.findIndex(x=>b.title.startsWith(x)));
+const leads = ranked.map(p=>rawMedia.find(m=>m.title===p.title)).filter(Boolean) as typeof rawMedia;
 const media = [...leads,...rawMedia.filter(m=>!leads.includes(m))];
 for(let i=1;i<=10;i++){ const src=`/covers/issue-${String(i).padStart(2,'0')}.jpg`;if(!media.some(x=>x.src===src))media.push({src,title:`Cover Stories · Issue ${String(i).padStart(2,'0')}`,subtitle:'Fictional editorial cover',link:undefined,issue:i,video:''});}
 export function FeaturedMedia(){

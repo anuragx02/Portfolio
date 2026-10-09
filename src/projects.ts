@@ -41,7 +41,7 @@ export const realProjects: Project[] = [{
 }, {
   id: 'saanjh', title: 'Saanjh - the shared mithai moment', discipline: 'Websites', year: '2026',
   summary: 'Fictional mithai label: identity, gift-box concept and a full site.',
-  cover: '/brands/saanjh-cover.jpg', link: 'https://files.instinct.com/3zgqqlw7lbmm-saanjh-the-shared-mithai-moment',
+  cover: '/brands/saanjh-cover.jpg', link: '/brands/saanjh/',
   tools: ['React', 'Files'],
   panels: [
     { caption: 'The brief: a mithai brand built around gifting and sharing.', image: '/brands/saanjh-cover.jpg' },
@@ -52,7 +52,7 @@ export const realProjects: Project[] = [{
 }, {
   id: 'mewform', title: 'Mewform - their bowl, their rules', discipline: 'Websites', year: '2026',
   summary: 'Fictional cat-food concept: identity, pouches, texture finder.',
-  cover: '/brands/mewform-cover.jpg', link: 'https://files.instinct.com/2d71auszzy44-mewform-their-bowl-their-rules',
+  cover: '/brands/mewform-cover.jpg', link: '/brands/mewform/',
   tools: ['React', 'Files'],
   panels: [
     { caption: 'The brief: a cat-food brand led by observation and choice.', image: '/brands/mewform-cover.jpg' },

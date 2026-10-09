@@ -570,3 +570,11 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
  .cursor-halo.over-link{background:rgba(243,250,255,.8);border-color:#fff}.flashlight-form .cursor-halo{opacity:0}
 }
 @media(max-width:760px){.site-scene{opacity:.85}.site-scene .scene-grain{opacity:.65}.site-scene .scene-rim{opacity:.6}}
+
+/* Small cached flashlight paint surface; no viewport-sized moving CSS mask. */
+.forest-light{position:fixed;left:0;top:0;z-index:-1;pointer-events:none;opacity:0;width:400px;height:400px;contain:strict;will-change:transform;transition:opacity .2s}
+.forest-light.lit{opacity:1}
+.t{backdrop-filter:blur(3px)}.hdr.is-scrolled{backdrop-filter:blur(6px)}.tag{backdrop-filter:none}
+.wcard,.cs-issue{will-change:auto}.t-about,.t-evidence,.t-tool{will-change:auto}
+.effects-idle .media-track,.effects-idle .cinema-beam,.effects-idle .cinema-dust{animation-play-state:paused}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.forest-light{display:none}}

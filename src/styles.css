@@ -578,3 +578,5 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .wcard,.cs-issue{will-change:auto}.t-about,.t-evidence,.t-tool{will-change:auto}
 .effects-idle .media-track,.effects-idle .cinema-beam,.effects-idle .cinema-dust{animation-play-state:paused}
 @media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.forest-light{display:none}}
+
+.gallery-offscreen .media-track{animation-play-state:paused}

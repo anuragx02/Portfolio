@@ -2,16 +2,18 @@ import React from 'react';
 import { projects } from './projects';
 import { profile } from './data';
 
-const media = projects.flatMap(p => {
+const rawMedia = projects.flatMap(p => {
   const images = [...new Set([p.cover, ...p.panels.map(x => x.image)].filter(Boolean))] as string[];
   const rows = images.map((src,i) => ({src, title:p.title, subtitle:i ? p.panels.find(x=>x.image===src)?.caption : p.summary, link:p.link, issue:p.readerIssue, video:''}));
   if(p.film) rows.unshift({src:p.film.poster || '',title:p.title,subtitle:'40-second cinematic concept · Play with sound controls',link:p.link,issue:undefined,video:p.film.src || ''});
   return rows;
 });
+const leads = projects.map(p=>rawMedia.find(m=>m.title===p.title)).filter(Boolean) as typeof rawMedia;
+const media = [...leads,...rawMedia.filter(m=>!leads.includes(m))];
 for(let i=1;i<=10;i++){ const src=`/covers/issue-${String(i).padStart(2,'0')}.jpg`;if(!media.some(x=>x.src===src))media.push({src,title:`Cover Stories · Issue ${String(i).padStart(2,'0')}`,subtitle:'Fictional editorial cover',link:undefined,issue:i,video:''});}
 export function FeaturedMedia(){
- const [paused,setPaused]=React.useState(false);const [playing,setPlaying]=React.useState(false);
- return <section className="featured-media" aria-label="Featured media gallery"><div className="film-heading"><p className="kicker"><b>FEATURED MEDIA</b> / FILMS · IMAGES · EXPERIMENTS</p><button className="pill" onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></div><div className="media-window"><div className={`media-track ${paused||playing?'paused':''}`}>
+ const [paused,setPaused]=React.useState(false);const windowRef=React.useRef<HTMLDivElement>(null);const move=(direction:number)=>{setPaused(true);windowRef.current?.scrollBy({left:direction*(innerWidth<760?308:398),behavior:"smooth"});};const [playing,setPlaying]=React.useState(false);
+ return <section className="featured-media" aria-label="Featured media gallery"><div className="film-heading"><p className="kicker"><b>FEATURED MEDIA</b> / FILMS · IMAGES · EXPERIMENTS</p><button className="pill" onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></div><div className="gallery-controls"><button className="pill" aria-label="Previous media" onClick={()=>move(-1)}>←</button><button className="pill" aria-label="Next media" onClick={()=>move(1)}>→</button></div><div className="media-window" ref={windowRef}><div className={`media-track ${paused||playing?'paused':''}`}>
  {[0,1].map(copy=><div className="media-set" key={copy} aria-hidden={copy===1?true:undefined}>{media.map((m,i)=><article className="media-card" key={`${copy}-${i}`}>{m.video?<video src={m.video} poster={m.src} controls playsInline preload="none" onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onEnded={()=>setPlaying(false)} tabIndex={copy?-1:0}/>:<img src={m.src} alt={m.title} loading="lazy"/>}<div><small>{m.video?'FILM':'VISUAL'}</small><h3>{m.title}</h3><p>{m.subtitle}</p>{m.link?<a tabIndex={copy?-1:0} href={m.link}>Open project ↗</a>:<button tabIndex={copy?-1:0} onClick={()=>{document.getElementById(m.issue?'covers':'work')?.scrollIntoView({behavior:'smooth'});if(m.issue)window.dispatchEvent(new CustomEvent('open-cover-stories',{detail:m.issue}));}}>Explore work ↗</button>}</div></article>)}</div>)}
  </div></div><p className="gallery-note">Best work first. Hover, focus or use Pause to stop motion. Every project is available below.</p></section>
 }

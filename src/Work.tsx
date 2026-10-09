@@ -103,8 +103,9 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
         <button className="sb-x" onClick={onClose} aria-label="Close"><X size={18} /></button>
         <p className="kicker"><b>{p.discipline.toUpperCase()}</b> {p.placeholder && <em className="ph">PLACEHOLDER</em>}</p>
         <h3>{p.title}</h3>
-        {p.link && <p><a className="btn btn-ghost sb-link" href={p.link} target="_blank" rel="noreferrer">Open the full concept site <ArrowUpRight size={14} /></a></p>}
+        {p.link && <p><a className="btn btn-ghost sb-link" href={p.link} target="_blank" rel="noreferrer">{p.podcastEmbed?'Listen on Spotify':'Open the full concept site'} <ArrowUpRight size={14} /></a></p>}
         {p.film && <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></>}
+        {p.podcastEmbed && <><iframe src={p.podcastEmbed} title="Spotify player: Your Brain is a Prediction Machine" width="100%" height="152" style={{border:0,borderRadius:12,marginBottom:20}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /><p className="film-project-note">AI-generated audio · ChatGPT source document and artwork · NotebookLM audio · Published by Anurag on Spotify for Creators</p></>}
         <div className="sb-strip" style={{ ['--i' as string]: i } as React.CSSProperties}>
           {p.panels.map((x, k) => (
             <button key={k} className={`sb-p ${k === i ? 'on' : ''} ${k === i && flip ? 'flip' : ''} s${k % 4}`} onClick={() => (k === i ? setFlip((f) => !f) : setI(k))} aria-label={`Panel ${k + 1}${k === i ? ', press to flip' : ''}`}>

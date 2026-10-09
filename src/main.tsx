@@ -1,3 +1,4 @@
+import {Exhibition} from './Exhibition';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ArrowDown, ArrowUpRight, Check, Copy, Mail, MousePointerClick, Move3d, Play } from 'lucide-react';
@@ -292,6 +293,7 @@ function App() {
           <WorkTile ids={['bmw-cinematic']} sectionId="work" n="01" label="VIDEOS / PRODUCT FILM" heading="Film and motion" />
           <WorkTile ids={['stepwell-carousel']} sectionId="visual-stories" n="02" label="IMAGES / CAROUSEL" heading="Images and visual stories" />
           <CoverStories />
+          <Exhibition />
           <WorkTile ids={['sookha','tola','saanjh','mewform']} sectionId="brands" n="03" label="WEBSITES / D2C BRAND CONCEPTS" heading="Research, strategy and case studies"><Evidence embedded /></WorkTile>
           <WorkTile ids={['brain-explained']} sectionId="audio" n="04" label="AUDIO / PODCAST" heading="Sound and conversation" />
           <WorkTile ids={['light-mood-lab']} sectionId="creative-lab" n="05" label="WEB / INTERACTIVE STUDY" heading="Creative lab" />

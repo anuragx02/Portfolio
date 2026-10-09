@@ -291,6 +291,7 @@ function App() {
   React.useEffect(() => {
     /* Background-only parallax: no moving content or layout reads on scroll. */
     const root=document.documentElement;
+    if(CSS.supports("animation-timeline: scroll()")) return;
     const reduce=matchMedia('(prefers-reduced-motion: reduce)');
     let raf=0;
     const update=()=>{raf=0;const range=Math.max(1,root.scrollHeight-innerHeight);const p=reduce.matches?0:Math.min(1,scrollY/range);root.style.setProperty('--scene-progress',p.toFixed(4));};
@@ -305,7 +306,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className="site-scene" aria-hidden="true"><i className="scene-layer scene-haze" /><i className="scene-layer scene-orbit" /><i className="scene-layer scene-plane" /><i className="scene-layer scene-grain" /></div><Progress />
+      <div className="site-scene" aria-hidden="true"><i className="scene-layer scene-haze" /><i className="scene-layer scene-orbit" /><i className="scene-layer scene-plane" /><i className="scene-layer scene-grain" /><i className="scene-layer scene-rim" /></div><Progress />
       <Header />
       <main>
         <Hero />

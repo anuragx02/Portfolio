@@ -7,7 +7,7 @@ export const DISCIPLINES: Discipline[] = ['AI Images', 'AI Video', 'Social', 'We
 export type Panel = { caption: string; prompt?: string; image?: string };
 export type Project = {
   id: string; title: string; discipline: Discipline; year?: string; summary: string;
-  film?: Film; cover?: string; featured?: boolean; placeholder?: boolean; panels: Panel[]; tools?: string[]; link?: string;
+  readerIssue?: number; film?: Film; cover?: string; featured?: boolean; placeholder?: boolean; panels: Panel[]; tools?: string[]; link?: string;
 };
 
 const ph = (n: number, discipline: Discipline, featured = false): Project => ({
@@ -82,6 +82,10 @@ export const realProjects: Project[] = [{
     { caption: 'Product detail: straps, buckles and label.', image: '/brands/tola/img/bag-detail.jpg' },
     { caption: 'Pack shot: the bag on its own.', image: '/brands/tola/img/bag-product.jpg' },
   ],
+}, {
+  id: 'cover-stories', title: 'Cover Stories - ten nights, ten issues', discipline: 'AI Images', year: '2026',
+  summary: 'Ten finished editorial covers from a fictional city after dark. Open the collection.',
+  cover: '/covers/issue-05.jpg', readerIssue: 1, panels: [],
 }];
 
 export const placeholderProjects: Project[] = [

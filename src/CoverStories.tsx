@@ -27,6 +27,14 @@ export function CoverStories() {
     const v = +(new URLSearchParams(location.search).get('issue') || 0);
     return v >= 1 && v <= ISSUES.length ? v - 1 : null;
   });
+  React.useEffect(() => {
+    const openReader = (e: Event) => {
+      const n = Number((e as CustomEvent<number>).detail);
+      if (n >= 1 && n <= ISSUES.length) setOpen(n - 1);
+    };
+    window.addEventListener('open-cover-stories', openReader);
+    return () => window.removeEventListener('open-cover-stories', openReader);
+  }, []);
   return (
     <div className="t t-covers" id="covers">
       <p className="kicker"><b>02</b> / COVER STORIES · {ISSUES.length} ISSUES</p>

@@ -108,4 +108,5 @@ export const placeholderProjects: Project[] = [
   ph(1, 'AI Video', true), ph(2, 'AI Images'), ph(3, 'Social'), ph(4, 'Websites'), ph(5, 'Creative AI'),
 ];
 
-export const projects: Project[] = realProjects.length ? realProjects : placeholderProjects;
+const order = ['bmw-cinematic', 'sookha', 'stepwell-carousel', 'cover-stories', 'tola', 'saanjh', 'mewform', 'light-mood-lab'];
+export const projects: Project[] = realProjects.length ? [...realProjects].sort((a,b) => order.indexOf(a.id)-order.indexOf(b.id)) : placeholderProjects;

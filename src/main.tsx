@@ -6,7 +6,7 @@ import { profile, skills, toolGroups } from './data';
 import { WorkTile } from './Work';
 import { FilmPlayer } from './FilmPlayer';
 import { bmwFilm } from './projects';
-import { DenoiseTile } from './Denoise';
+import { FeaturedMedia, About, Evidence } from './FeaturedMedia';
 import { CoverStories } from './CoverStories';
 const THEME = (new URLSearchParams(location.search).get('theme') || 'chrome');
 document.documentElement.dataset.theme = THEME;
@@ -26,6 +26,7 @@ const num = (n: number) => String(n).padStart(2, '0');
 
 function Header() {
   const [scrolled, setScrolled] = React.useState(false);
+  const [menu, setMenu] = React.useState(false);
   React.useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
     on(); window.addEventListener('scroll', on, { passive: true });
@@ -37,7 +38,9 @@ function Header() {
         <button className="brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <span className="brand-dot" /> {profile.name}
         </button>
-        <nav aria-label="Primary">
+        <button className="menu-toggle pill" aria-expanded={menu} aria-controls="primary-nav" onClick={() => setMenu(!menu)}>Menu</button>
+        <nav id="primary-nav" className={menu ? "is-open" : ""} aria-label="Primary" onClick={() => setMenu(false)}>
+          <button onClick={() => go('about')}>About</button>
           <button onClick={() => go('work')}>Work</button>
           <button onClick={() => go('orbit')}>Skills</button>
           <button onClick={() => go('toolkit')}>Toolkit</button>
@@ -83,13 +86,7 @@ function Hero() {
           <div className="tag t3">WEBSITES</div>
         </div>
       </div>
-      <div className="wrap reel-wrap">
-        <div className="featured-film">
-          <div className="film-heading"><p className="kicker"><b>FEATURED FILM</b> / 2026</p><span>00:40 · GOOGLE FLOW</span></div>
-          <FilmPlayer film={bmwFilm} preview />
-          <div className="film-footer"><div><h2>BMW <em>in motion.</em></h2><p>A cinematic concept by Anurag. Four scenes. One open road.</p></div><button className="btn btn-ghost" onClick={() => go('work')}>Explore the sequence <ArrowDown size={14} /></button></div>
-        </div>
-      </div>
+      <div className="wrap reel-wrap"><FeaturedMedia /></div>
     </section>
   );
 }
@@ -148,7 +145,7 @@ function Orbit() {
   return (
     <div className="t t-orbit" id="orbit">
       <div>
-        <SecHead n="04" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
+        <SecHead n="05" label="SKILLS ORBIT" title={<>Five ways I <em>make</em> things</>} note={ok ? 'Drag to spin. Click a card to open it.' : 'Pick a discipline.'} />
         <div className="orbit">
           <div className="stage" ref={stage}>
             {ok && near ? (
@@ -343,9 +340,10 @@ function App() {
       <main>
         <Hero />
         <div className="wrap dash">
+          <About />
+          <Evidence />
           <WorkTile />
           <CoverStories />
-          <DenoiseTile />
           <Orbit />
           <Toolkit />
           <Contact />

@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, LayoutGrid, List, X } from 'lucide-react';
 import { DISCIPLINES, projects, type Project } from './projects';
 
-const PAGE = 5;
+const PAGE = 8;
 const MORE = 8;
 const num = (n: number) => String(n).padStart(2, '0');
 const hue = (s: string) => [...s].reduce((a, c) => a + c.charCodeAt(0), 0) % 40;
@@ -49,7 +49,7 @@ export function WorkTile() {
       {vis.length === 0 && <p className="note">Nothing in this filter yet.</p>}
       <div className={`wgrid v-${view}`}>
         {vis.map((p, i) => (
-          <button key={p.id} className={`wcard ${p.featured && view === 'grid' && filter === 'ALL' ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
+          <div key={p.id} className="project-entry"><button className={`wcard ${p.featured && view === 'grid' && filter === 'ALL' ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
             <span className="wcover">
               {p.cover ? <img src={p.cover} alt="" loading="lazy" /> : <i className="wart" />}
               {p.placeholder && <em className="ph">PLACEHOLDER</em>}
@@ -57,6 +57,7 @@ export function WorkTile() {
             </span>
             <span className="wmeta"><small>{p.discipline}{p.year ? ` · ${p.year}` : ''}</small><strong>{p.title}</strong><span>{p.summary}</span></span>
           </button>
+          <div className="project-links">{p.link && <a href={p.link}>Live project ↗</a>}{['sookha','tola'].includes(p.id) && <a href={`/brands/${p.id}/case-study.html`}>Case study ↗</a>}{p.id === 'mewform' && <a href="/brands/mewform/#/case-study">Case study ↗</a>}</div></div>
         ))}
         {list.length > shown && (
           <button className="wmore" onClick={() => setShown(shown + MORE)}>+ {list.length - shown} more · load</button>

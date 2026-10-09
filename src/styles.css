@@ -474,3 +474,8 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 @media(prefers-reduced-motion:reduce){.cinema-beam,.cinema-dust{animation:none!important}.lumen-core,.lumen .tag{transform:none!important;translate:none!important;transition:none}.hero .live{animation:none}}
 
 .cinema-canvas{position:absolute;top:0;left:0;width:100%;height:min(940px,110vh);z-index:-1;pointer-events:none;opacity:.86;mask-image:linear-gradient(#000 66%,transparent)}.hero-copy{position:relative;z-index:2;text-shadow:0 2px 24px #030907}.lumen-core{box-shadow:0 0 0 1px rgba(166,206,177,.24),0 24px 90px #030906,0 0 70px rgba(84,154,112,.17)}@media(prefers-reduced-motion:reduce){.cinema-canvas{display:none}}
+
+/* Match the portrait backdrop: monochrome site palette. */
+.cinema-atmosphere{background:radial-gradient(ellipse at 52% 44%,rgba(22,24,28,.35),transparent 65%)}.cinema-beam{background:linear-gradient(90deg,transparent,rgba(100,106,118,.1) 46%,rgba(155,163,177,.14) 53%,transparent)}.lumen-core{box-shadow:0 0 0 1px rgba(130,135,146,.2),0 24px 90px #030906,0 0 70px rgba(22,24,28,.3)}
+
+.cinema-dust{background:#d7d9df;box-shadow:0 0 5px rgba(210,214,223,.35)}.cinema-canvas{opacity:.7}

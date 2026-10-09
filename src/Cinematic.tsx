@@ -4,7 +4,7 @@ uniform vec2 resolution;uniform vec2 pointer;uniform float time;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
 float fbm(vec2 p){float v=0.;float a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=mat2(.8,-.6,.6,.8)*p*2.04;a*=.5;}return v;}
-void main(){vec2 uv=gl_FragCoord.xy/resolution;vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*3.;float t=time*.065;vec2 q=vec2(fbm(p+vec2(t,-t)),fbm(p+vec2(4.2+t,1.3)));vec2 r=vec2(fbm(p+3.*q+vec2(1.7,t)),fbm(p+3.*q+vec2(8.3,-t)));float f=fbm(p+3.6*r+pointer*.35);float vein=smoothstep(.38,.7,f)*(.45+.55*r.x);float halo=exp(-3.*length(uv-vec2(.72,.58)));vec3 col=mix(vec3(.012,.022,.018),vec3(.16,.38,.27),vein);col+=vec3(.26,.38,.28)*pow(f,5.)*2.;col+=vec3(.06,.14,.09)*halo;float edge=smoothstep(0.,.13,uv.y)*smoothstep(1.,.8,uv.y);gl_FragColor=vec4(col*edge,1.);}`;
+void main(){vec2 uv=gl_FragCoord.xy/resolution;vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.)*3.;float t=time*.065;vec2 q=vec2(fbm(p+vec2(t,-t)),fbm(p+vec2(4.2+t,1.3)));vec2 r=vec2(fbm(p+3.*q+vec2(1.7,t)),fbm(p+3.*q+vec2(8.3,-t)));float f=fbm(p+3.6*r+pointer*.35);float vein=smoothstep(.38,.7,f)*(.45+.55*r.x);float halo=exp(-3.*length(uv-vec2(.72,.58)));vec3 col=mix(vec3(.012,.013,.015),vec3(.22,.23,.25),vein);col+=vec3(.16,.17,.19)*pow(f,5.)*2.;col+=vec3(.03,.032,.036)*halo;float edge=smoothstep(0.,.13,uv.y)*smoothstep(1.,.8,uv.y);gl_FragColor=vec4(col*edge,1.);}`;
 export default function Cinematic(){
  const ref=React.useRef<HTMLCanvasElement>(null);
  React.useEffect(()=>{

@@ -51,13 +51,13 @@ export function WorkTile() {
         {vis.map((p, i) => (
           <div key={p.id} className="project-entry"><button className={`wcard ${p.featured && view === 'grid' && filter === 'ALL' ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
             <span className="wcover">
-              {p.cover ? <img src={p.cover} alt="" loading="lazy" /> : <i className="wart" />}
+              {p.cover ? <img src={p.cover} alt="" loading="lazy" style={p.podcastEmbed?{objectFit:"contain",background:"#16191c"}:undefined} /> : <i className="wart" />}
               {p.placeholder && <em className="ph">PLACEHOLDER</em>}
               <b className="wn">{num(i + 1)}</b>
             </span>
             <span className="wmeta"><small>{p.discipline}{p.year ? ` · ${p.year}` : ''}</small><strong>{p.title}</strong><span>{p.summary}</span></span>
           </button>
-          <div className="project-links">{p.link && <a href={p.link}>Live project ↗</a>}{['sookha','tola'].includes(p.id) && <a href={`/brands/${p.id}/case-study.html`}>Case study ↗</a>}{p.id === 'mewform' && <a href="/brands/mewform/#/case-study">Case study ↗</a>}</div></div>
+          <div className="project-links">{p.link && <a href={p.link}>{p.podcastEmbed?"Listen on Spotify ↗":"Live project ↗"}</a>}{['sookha','tola'].includes(p.id) && <a href={`/brands/${p.id}/case-study.html`}>Case study ↗</a>}{p.id === 'mewform' && <a href="/brands/mewform/#/case-study">Case study ↗</a>}</div></div>
         ))}
         {list.length > shown && (
           <button className="wmore" onClick={() => setShown(shown + MORE)}>+ {list.length - shown} more · load</button>
@@ -105,7 +105,7 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
         <h3>{p.title}</h3>
         {p.link && <p><a className="btn btn-ghost sb-link" href={p.link} target="_blank" rel="noreferrer">{p.podcastEmbed?'Listen on Spotify':'Open the full concept site'} <ArrowUpRight size={14} /></a></p>}
         {p.film && <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></>}
-        {p.podcastEmbed && <><iframe src={p.podcastEmbed} title="Spotify player: Your Brain is a Prediction Machine" width="100%" height="152" style={{border:0,borderRadius:12,marginBottom:20}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /><p className="film-project-note">AI-generated audio · ChatGPT source document and artwork · NotebookLM audio · Published by Anurag on Spotify for Creators</p></>}
+        {p.podcastEmbed && <><iframe src={p.podcastEmbed} title="Spotify player: Your Brain is a Prediction Machine" width="100%" height="352" style={{border:0,borderRadius:12,marginBottom:20}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /><p className="film-project-note">AI-generated audio · ChatGPT source document and artwork · NotebookLM audio · Published by Anurag on Spotify for Creators</p></>}
         <div className="sb-strip" style={{ ['--i' as string]: i } as React.CSSProperties}>
           {p.panels.map((x, k) => (
             <button key={k} className={`sb-p ${k === i ? 'on' : ''} ${k === i && flip ? 'flip' : ''} s${k % 4}`} onClick={() => (k === i ? setFlip((f) => !f) : setI(k))} aria-label={`Panel ${k + 1}${k === i ? ', press to flip' : ''}`}>

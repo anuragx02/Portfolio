@@ -52,20 +52,23 @@ function Header() {
   );
 }
 
+const Cinematic = React.lazy(() => import("./Cinematic"));
 function Hero() {
+  const [cinema,setCinema]=React.useState(false);
+  React.useEffect(()=>{ if(matchMedia("(prefers-reduced-motion: reduce)").matches || matchMedia("(pointer: coarse)").matches || innerWidth < 900 || ((navigator as Navigator & {deviceMemory?:number}).deviceMemory ?? 8) < 4) return; const id=window.setTimeout(()=>setCinema(true),800);return()=>clearTimeout(id);},[]);
   const ref = React.useRef<HTMLElement>(null);
   const onMove = (e: React.PointerEvent<HTMLElement>) => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current; if (!el || e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const r = el.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
     el.style.setProperty('--mx', `${x * 100}%`); el.style.setProperty('--my', `${y * 100}%`);
     el.style.setProperty('--px', String((x * 2 - 1).toFixed(3))); el.style.setProperty('--py', String((y * 2 - 1).toFixed(3)));
-    el.style.setProperty('--rx', `${(0.5 - y) * 9}deg`); el.style.setProperty('--ry', `${(x - 0.5) * 12}deg`);
+    el.style.setProperty('--rx', `${(0.5 - y) * 4}deg`); el.style.setProperty('--ry', `${(x - 0.5) * 5}deg`);
   };
   return (
-    <section id="top" className="hero" ref={ref} onPointerMove={onMove}>
+    <section id="top" className="hero" ref={ref} onPointerMove={onMove} onPointerLeave={() => { const el=ref.current; if(el) for(const key of ["--px","--py","--rx","--ry"]) el.style.setProperty(key,key.includes("r") ? "0deg" : "0"); }}> 
       <div className="hero-bg" aria-hidden="true"><HeroVideo /><i className="blob b1" /><i className="blob b2" /><i className="grid" /></div>
-      <div className="wrap hero-grid">
+      {cinema && <React.Suspense fallback={null}><Cinematic /></React.Suspense>}<div className="wrap hero-grid">
         <div className="hero-copy">
           <p className="kicker"><span className="live" /> AI CREATIVE · CONTENT · DIGITAL EXPERIENCES</p>
           <h1>
@@ -79,7 +82,7 @@ function Hero() {
             <button className="btn btn-ghost" onClick={() => go('contact')}><Mail size={16} /> Hire me</button>
           </div>
         </div>
-        <div className="lumen" aria-hidden="true">
+        <div className="lumen" aria-hidden="true"><div className="cinema-atmosphere"><i className="cinema-beam beam-one" /><i className="cinema-beam beam-two" />{Array.from({length:12},(_,i)=><i className="cinema-dust" key={i} style={{left:`${8+(i*19)%84}%`,top:`${12+(i*31)%78}%`,animationDelay:`-${i*2.7}s`,animationDuration:`${22+i%4*5}s`}} />)}</div>
           <div className="lumen-core"><img className="lc-portrait" src="/portrait-choice-c.jpg" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
           <div className="tag t1">AI VIDEO</div>
           <div className="tag t2">AI IMAGES</div>

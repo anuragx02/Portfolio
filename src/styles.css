@@ -587,3 +587,6 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .ex-stage{position:relative;overflow:hidden}.ex-stage img{position:absolute;inset:0;object-fit:contain}.ex-reader footer{flex-shrink:0}.ex-reader header{flex-shrink:0}
 .ex-collections{display:grid;gap:22px}
 @media(max-width:600px){.ex-reader header>span{white-space:nowrap;font-size:9px;min-width:92px}.ex-reader header>div{gap:4px}.ex-reader header button{padding:9px 7px}}
+
+/* Keep the desktop flashlight pointer above the full-screen essay dialog. */
+@media (hover:hover) and (pointer:fine){body:has(.ex-reader) .cursor-halo{z-index:11000}}

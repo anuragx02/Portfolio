@@ -107,7 +107,7 @@ function Dust({ count }: { count: number }) {
   return <points ref={ref} geometry={geo}><pointsMaterial size={0.035} color={LIME} transparent opacity={0.55} sizeAttenuation depthWrite={false} /></points>;
 }
 
-function Rig({ items, selected, onSelect }: { items: OrbitItem[]; selected: number | null; onSelect: (i: number | null) => void }) {
+function Rig({ items, selected, onSelect, onHover }: { items: OrbitItem[]; selected: number | null; onSelect: (i: number | null) => void; onHover?: (i:number|null)=>void }) {
   const group = React.useRef<THREE.Group>(null);
   const rot = React.useRef(0);
   const [hovered, setHovered] = React.useState<number | null>(null);
@@ -147,7 +147,7 @@ function Rig({ items, selected, onSelect }: { items: OrbitItem[]; selected: numb
         <group ref={group}>
           {items.map((it, i) => (
             <Card key={it.id} index={i} total={items.length} item={it} selected={selected === i} hovered={hovered === i}
-              onHover={setHovered} onSelect={(n) => onSelect(selected === n ? null : n)} dragged={dragged} />
+              onHover={n=>{setHovered(n);onHover?.(n)}} onSelect={(n) => onSelect(selected === n ? null : n)} dragged={dragged} />
           ))}
         </group>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.7, 0]}>
@@ -162,13 +162,13 @@ function Rig({ items, selected, onSelect }: { items: OrbitItem[]; selected: numb
   );
 }
 
-export default function Orbit3D({ items, selected, onSelect, active }: {
-  items: OrbitItem[]; selected: number | null; onSelect: (i: number | null) => void; active: boolean;
+export default function Orbit3D({ items, selected, onSelect, active, onHover }: {
+  items: OrbitItem[]; selected: number | null; onSelect: (i: number | null) => void; active: boolean; onHover?: (i:number|null)=>void;
 }) {
   return (
     <Canvas frameloop={active ? 'always' : 'never'} dpr={[1, 1.5]} camera={{ position: [0, 0.6, 8.2], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }} style={{ touchAction: 'pan-y' }}>
-      <Rig items={items} selected={selected} onSelect={onSelect} />
+      <Rig items={items} selected={selected} onSelect={onSelect} onHover={onHover} />
     </Canvas>
   );
 }

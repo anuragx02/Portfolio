@@ -594,10 +594,10 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 
 /* Slide surface navigation: 40 percent back, 60 percent forward. */
 .ex-stage{position:relative}
-.ex-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;border-radius:0;padding:0;z-index:1;cursor:pointer}
+.ex-reader .ex-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;border-radius:0;padding:0;z-index:1;cursor:pointer}
 .ex-zone-prev{left:0;width:40%}.ex-zone-next{right:0;width:60%}
 .ex-zone:disabled{cursor:default}
-.ex-zone:focus-visible{outline:2px solid var(--bone);outline-offset:-5px;background:rgba(255,255,255,.035)}
+.ex-reader .ex-zone:focus-visible{outline:2px solid var(--bone);outline-offset:-5px;background:rgba(255,255,255,.035)}
 .ex-reader footer>button{background:transparent;border-color:transparent;color:var(--mute);font-size:12px}
 @media(hover:hover) and (pointer:fine){
  body:has(.ex-zone-next:hover:not(:disabled)) .cursor-halo::after{content:"next →"}
@@ -605,3 +605,5 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
  .cursor-halo::after{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:8px;white-space:nowrap;font:600 11px var(--mono);letter-spacing:.06em;color:#f4f7fa;background:#0c141ddd;border:1px solid #dce6ef33;border-radius:20px;padding:6px 10px}
  .cursor-halo:empty::after{pointer-events:none}
 }
+
+.ex-notes{z-index:2}

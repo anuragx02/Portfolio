@@ -480,7 +480,7 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .scene-plane{background:linear-gradient(124deg,transparent 25%,rgba(173,180,190,.045) 25.1%,rgba(173,180,190,.016) 47%,transparent 47.1%),linear-gradient(34deg,transparent 65%,rgba(173,180,190,.018) 65.1%,transparent 82%);transform:translate3d(0,calc(var(--scene-progress,0)*-76px),0)}
 .scene-grain{opacity:.13;background-image:radial-gradient(rgba(215,220,230,.4) .6px,transparent .8px);background-size:91px 83px;mask-image:linear-gradient(transparent,#000 20%,#000 75%,transparent);transform:translate3d(0,calc(var(--scene-progress,0)*-110px),0)}
 .hero-bg::before,.hero .blob{display:none}.hero-bg::after{opacity:.35}.cinema-atmosphere{opacity:.45}.cinema-beam,.cinema-dust{animation:none}
-.t-work,.t-covers,.t-contact,.featured-media,.reel-wrap{transform:none!important;translate:none!important;opacity:1!important;will-change:auto;transition-property:border-color,background,box-shadow}
+.featured-media,.reel-wrap{transform:none!important;translate:none!important;opacity:1!important;will-change:auto;transition-property:border-color,background,box-shadow}
 @media(max-width:760px){.scene-orbit{display:none}.scene-layer{will-change:auto}.scene-plane{opacity:.6}.scene-grain{opacity:.08}}
 @media(prefers-reduced-motion:reduce){.scene-layer{transform:none!important;will-change:auto}}
 
@@ -521,19 +521,19 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .site-scene::before{background:radial-gradient(circle at 35% 32%,rgba(154,183,194,.19),rgba(99,133,152,.09) 68%,transparent 70%);box-shadow:0 0 100px rgba(112,150,172,.10)}
 @media(max-width:760px){.site-scene{opacity:1}.site-scene .scene-grain{opacity:.85}.site-scene .scene-rim{opacity:.8}}
 
-/* Restore the original module float at 40 percent of its depth, tilt and fade. */
-@media(min-width:900px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
- .dash{perspective:1100px;perspective-origin:50% 35%}
- .t-about,.t-evidence,.t-tool{animation:none;transform-origin:50% 50%;backface-visibility:hidden;will-change:transform,opacity}
- .t-about,.t-tool{--float-sign:-1}.t-evidence{--float-sign:1}
+/* Consistent shallow depth, measured from each module's own viewport passage.
+   A per-module perspective avoids exaggerating the final sections. */
+@media(min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .dash{perspective:none}
+ .dash>.t{transform:none;translate:none!important;opacity:1!important;animation:none;transform-origin:center;backface-visibility:hidden}
  @supports(animation-timeline:view()){
-  .t-about,.t-evidence,.t-tool{animation:module-float linear both;animation-timeline:view(block);animation-range:entry 0% exit 100%}
+  .dash>.t{animation:module-depth-subtle linear both;animation-timeline:view(block);animation-range:entry 0% exit 100%}
  }
 }
-@keyframes module-float{
- 0%{transform:translateZ(-100px) rotateX(-5.6deg) rotateY(calc(var(--float-sign,1)*1.2deg));opacity:.78}
- 50%{transform:translateZ(0) rotateX(0) rotateY(0);opacity:1}
- 100%{transform:translateZ(-100px) rotateX(5.6deg) rotateY(calc(var(--float-sign,1)*-1.2deg));opacity:.78}
+@keyframes module-depth-subtle{
+ 0%{transform:perspective(1800px) translateZ(-18px) rotateX(-.6deg)}
+ 45%,55%{transform:perspective(1800px) translateZ(0) rotateX(0)}
+ 100%{transform:perspective(1800px) translateZ(-18px) rotateX(.6deg)}
 }
 
 /* Desktop hover cues: keep the native cursor and all module positions intact. */
@@ -590,3 +590,18 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 
 /* Keep the desktop flashlight pointer above the full-screen essay dialog. */
 @media (hover:hover) and (pointer:fine){body:has(.ex-reader) .cursor-halo{z-index:11000}}
+
+
+/* Slide surface navigation: 40 percent back, 60 percent forward. */
+.ex-stage{position:relative}
+.ex-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;border-radius:0;padding:0;z-index:1;cursor:pointer}
+.ex-zone-prev{left:0;width:40%}.ex-zone-next{right:0;width:60%}
+.ex-zone:disabled{cursor:default}
+.ex-zone:focus-visible{outline:2px solid var(--bone);outline-offset:-5px;background:rgba(255,255,255,.035)}
+.ex-reader footer>button{background:transparent;border-color:transparent;color:var(--mute);font-size:12px}
+@media(hover:hover) and (pointer:fine){
+ body:has(.ex-zone-next:hover:not(:disabled)) .cursor-halo::after{content:"next →"}
+ body:has(.ex-zone-prev:hover:not(:disabled)) .cursor-halo::after{content:"← prev"}
+ .cursor-halo::after{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:8px;white-space:nowrap;font:600 11px var(--mono);letter-spacing:.06em;color:#f4f7fa;background:#0c141ddd;border:1px solid #dce6ef33;border-radius:20px;padding:6px 10px}
+ .cursor-halo:empty::after{pointer-events:none}
+}

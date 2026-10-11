@@ -647,3 +647,13 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .line-camera{position:absolute;inset:0 0 6%;color:#c5d0d9}.line-camera canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y;outline:none}.line-camera canvas[data-dragging=true]{cursor:grabbing}.line-camera canvas:focus-visible{outline:1px solid #c5d0d955;outline-offset:3px;border-radius:16px}.line-camera .camera-edition{bottom:-3px;pointer-events:none}.line-camera~.camera-hint{font-size:7px;letter-spacing:.09em}.core-label{touch-action:manipulation}.line-camera canvas[data-dragging=true]{touch-action:none}
 @media(hover:none),(pointer:coarse){.line-camera~.camera-hint .camera-interactive-hint{display:inline}.line-camera~.camera-hint .camera-static-hint{display:none}.line-camera~.camera-hint{font-size:6px}.line-camera canvas{touch-action:pan-y}}
 @media(prefers-reduced-motion:reduce){.line-camera~.camera-hint .camera-interactive-hint{display:none}.line-camera~.camera-hint .camera-static-hint{display:inline}.line-camera canvas{cursor:default}}
+
+/* Minimal platform buttons: mark, title, small handle. */
+.contact-cards>a,.contact-cards>.social-coming{padding:22px;min-height:150px}
+.contact-cards .social-top{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--bone)}
+.contact-cards .social-logo{width:25px;height:25px;flex:none}
+.contact-cards>a strong,.contact-cards>.social-coming strong{font:600 29px/1.1 var(--display);margin:18px 0 8px;overflow-wrap:normal}
+.contact-cards small{display:block;font:11px/1.6 var(--mono);color:var(--mute);letter-spacing:.02em}
+.contact-cards>a:nth-of-type(3){min-height:150px}
+@media(max-width:600px){.contact-cards>a,.contact-cards>.social-coming{padding:18px;min-height:144px}.contact-cards>a strong,.contact-cards>.social-coming strong{font-size:21px}}
+@media(max-width:380px){.contact-cards>a,.contact-cards>.social-coming{min-height:140px}.contact-cards>a strong,.contact-cards>.social-coming strong{font-size:28px}}

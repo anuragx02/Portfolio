@@ -657,3 +657,9 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .contact-cards>a:nth-of-type(3){min-height:150px}
 @media(max-width:600px){.contact-cards>a,.contact-cards>.social-coming{padding:18px;min-height:144px}.contact-cards>a strong,.contact-cards>.social-coming strong{font-size:21px}}
 @media(max-width:380px){.contact-cards>a,.contact-cards>.social-coming{min-height:140px}.contact-cards>a strong,.contact-cards>.social-coming strong{font-size:28px}}
+/* Larger platform marks, keeping the approved title and handle treatment. */
+.contact-cards .social-logo{width:72px;height:72px}
+.contact-cards .social-top{align-items:flex-start}
+@media(max-width:600px){.contact-cards .social-logo{width:60px;height:60px}}
+
+.contact-cards small{margin-top:20px}

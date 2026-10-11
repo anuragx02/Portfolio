@@ -1,4 +1,5 @@
 import {Exhibition} from './Exhibition';
+import {LineCamera} from './LineCamera';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ArrowDown, ArrowUpRight, Check, Copy, Mail, MousePointerClick, Move3d, Play } from 'lucide-react';
@@ -88,16 +89,18 @@ function Hero() {
             <button className="btn btn-ghost" onClick={() => go('contact')}><Mail size={16} /> Hire me</button>
           </div>
         </div>
-        <div className="lumen" aria-hidden="true"><div className="cinema-atmosphere"><i className="cinema-beam beam-one" /><i className="cinema-beam beam-two" />{Array.from({length:12},(_,i)=><i className="cinema-dust" key={i} style={{left:`${8+(i*19)%84}%`,top:`${12+(i*31)%78}%`,animationDelay:`-${i*2.7}s`,animationDuration:`${22+i%4*5}s`}} />)}</div>
-          <div className="lumen-core"><img className="lc-portrait" src="/1-portrait-corner-clean.png" width="896" height="1200" fetchPriority="high" decoding="async" alt="Portrait of Anurag Dutta" /><i className="lc-sheen" /><i className="lc-ring r1" /><i className="lc-ring r2" /><i className="lc-ring r3" /></div>
-          <div className="tag t1">AI VIDEO</div>
-          <div className="tag t2">AI IMAGES</div>
-          <div className="tag t3">WEBSITES</div>
-        </div>
+        <CreativeCore />
       </div>
       <div className="wrap reel-wrap"><FeaturedMedia /></div>
     </section>
   );
+}
+
+function CreativeCore(){
+ const [picked,setPicked]=React.useState(0);
+ const items=[{title:'Films',line:'Cinematic concepts, built one scene at a time.',target:'work'},{title:'Images',line:'Editorial covers and visual stories with an idea behind them.',target:'visual-stories'},{title:'Digital experiences',line:'Brand concepts and interactive studies you can explore.',target:'creative-lab'}];
+ const cur=items[picked];
+ return <div className="creative-core" aria-label="Explore creative work"><div className="core-space" role="group" aria-label="Interactive film camera"><LineCamera/><span className="camera-hint"><span className="camera-interactive-hint">DRAG TO ROTATE / SHIFT + DRAG TO ROLL / CLICK</span><span className="camera-static-hint">A STUDY IN MOTION</span></span>{items.map((item,i)=><button key={item.title} className={'core-label label-'+i+(picked===i?' selected':'')} aria-pressed={picked===i} onMouseEnter={()=>setPicked(i)} onFocus={()=>setPicked(i)} onClick={()=>setPicked(i)}>{item.title}<span>↗</span></button>)}</div><div className="core-detail" aria-live="polite"><p className="kicker">EXPLORE / {cur.title.toUpperCase()}</p><p>{cur.line}</p><button className="core-jump" onClick={()=>go(cur.target)}>View {cur.title.toLowerCase()} ↗</button></div></div>
 }
 
 /* Hero video slot. Leave HERO_VIDEO empty until Anurag's own clip exists.
@@ -265,12 +268,13 @@ function Contact() {
           {status === 'sent' && <p className="note cf-ok">Thanks - your message is on its way.</p>}
           {status === 'error' && <p className="note cf-err">That didn&apos;t go through. Email me directly at {profile.email}.</p>}
         </form>
-        <div className="soc">
+        <div className="soc contact-inline-links">
           <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={14} /></a>
           <a href={profile.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>
           <a href={profile.x} target="_blank" rel="noreferrer"><XIcon /> X <ArrowUpRight size={14} /></a>
         </div>
       </div>
+      <aside className="contact-cards" aria-label="Find me online"><p className="kicker">ELSEWHERE / CONNECT</p><a href={profile.x} target="_blank" rel="noreferrer"><span>01 / X</span><strong>Thoughts & new work <ArrowUpRight size={22}/></strong><p>Follow the projects as they take shape.</p></a><a href={profile.linkedin} target="_blank" rel="noreferrer"><span>02 / LINKEDIN</span><strong>Work & opportunities <ArrowUpRight size={22}/></strong><p>Connect for creative roles and collaborations.</p></a><a href={profile.github} target="_blank" rel="noreferrer"><span>03 / GITHUB</span><strong>Code & experiments <ArrowUpRight size={22}/></strong><p>Explore the web projects behind the portfolio.</p></a><div className="social-coming" aria-disabled="true"><span>04 / YOUTUBE</span><strong>Films & process</strong><p>Coming soon</p></div><div className="social-coming" aria-disabled="true"><span>05 / INSTAGRAM</span><strong>Visual work</strong><p>Coming soon</p></div></aside>
     </div>
   );
 }

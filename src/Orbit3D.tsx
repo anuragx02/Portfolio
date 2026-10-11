@@ -133,7 +133,8 @@ function Rig({ items, selected, onSelect, onHover }: { items: OrbitItem[]; selec
       const target = -((selected / items.length) * TAU);
       rot.current += wrap(target - rot.current) * Math.min(1, dt * 4);
     } else if (!dragging.current && hovered === null) {
-      rot.current += dt * 0.18;
+      // Negative yaw brings card 02 forward after 01, then 03, 04 and 05.
+      rot.current -= dt * 0.18;
     }
     g.rotation.y = rot.current;
     camera.position.x = THREE.MathUtils.damp(camera.position.x, pointer.x * 0.9, 3, dt);

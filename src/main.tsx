@@ -192,7 +192,7 @@ function Orbit() {
           </div>
         </div>
       </div>
-      <div className="process-example"><p className="kicker">ONE DOCUMENTED REVISION / TOLA</p><p><strong>Before:</strong> 'Ergonomic and light' as the gap. <strong>After:</strong> a printed load-label concept, with the unresolved tests kept visible.</p><a href="/brands/tola/case-study.html">Read the reasoning ↗</a></div>
+
     </div>
   );
 }
@@ -274,7 +274,14 @@ function Contact() {
           <a href={profile.x} target="_blank" rel="noreferrer"><XIcon /> X <ArrowUpRight size={14} /></a>
         </div>
       </div>
-      <aside className="contact-cards" aria-label="Find me online"><p className="kicker">ELSEWHERE / CONNECT</p><a href={profile.x} target="_blank" rel="noreferrer"><span>01 / X</span><strong>Thoughts & new work <ArrowUpRight size={22}/></strong><p>Follow the projects as they take shape.</p></a><a href={profile.linkedin} target="_blank" rel="noreferrer"><span>02 / LINKEDIN</span><strong>Work & opportunities <ArrowUpRight size={22}/></strong><p>Connect for creative roles and collaborations.</p></a><a href={profile.github} target="_blank" rel="noreferrer"><span>03 / GITHUB</span><strong>Code & experiments <ArrowUpRight size={22}/></strong><p>Explore the web projects behind the portfolio.</p></a><div className="social-coming" aria-disabled="true"><span>04 / YOUTUBE</span><strong>Films & process</strong><p>Coming soon</p></div><div className="social-coming" aria-disabled="true"><span>05 / INSTAGRAM</span><strong>Visual work</strong><p>Coming soon</p></div></aside>
+      <aside className="contact-cards" aria-label="Find me online">
+        <p className="kicker">ELSEWHERE / CONNECT</p>
+        <a href={profile.x} target="_blank" rel="noreferrer"><div className="social-top"><svg className="social-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 3h4l12 18h-4L4 3ZM20 3 4 21"/></svg><ArrowUpRight size={18}/></div><strong>X</strong><small>@anuragx0202</small></a>
+        <a href={profile.linkedin} target="_blank" rel="noreferrer"><div className="social-top"><svg className="social-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.1M11 17v-7m0 3a3 3 0 0 1 6 0v4"/></svg><ArrowUpRight size={18}/></div><strong>LinkedIn</strong><small>@anuragx02</small></a>
+        <a href={profile.github} target="_blank" rel="noreferrer"><div className="social-top"><svg className="social-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 19c-4 1-4-2-6-2m14 5v-4c0-1-.3-1.7-1-2 3-.4 5-1.5 5-5a4 4 0 0 0-1-3c.3-1 .3-2-.1-3-1 0-2.4.4-3.5 1a12 12 0 0 0-7 0C8.3 5.4 7 5 6 5c-.4 1-.4 2-.1 3a4 4 0 0 0-1 3c0 3.5 2 4.6 5 5-.7.3-1 1-1 2v4"/></svg><ArrowUpRight size={18}/></div><strong>GitHub</strong><small>@anuragx02</small></a>
+        <div className="social-coming" aria-disabled="true"><div className="social-top"><svg className="social-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3Z"/></svg></div><strong>YouTube</strong><small>Coming soon</small></div>
+        <div className="social-coming" aria-disabled="true"><div className="social-top"><svg className="social-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></div><strong>Instagram</strong><small>Coming soon</small></div>
+      </aside>
     </div>
   );
 }

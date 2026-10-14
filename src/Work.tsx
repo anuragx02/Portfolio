@@ -2,7 +2,11 @@ import React from 'react';
 import { FilmPlayer } from './FilmPlayer';
 import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, LayoutGrid, List, X } from 'lucide-react';
-import { DISCIPLINES, projects, projectSubtype, type Project } from './projects';
+import { DISCIPLINES, projects as baseProjects, projectSubtype, type Project as BaseProject } from './projects';
+import { timeProject, type ProjectLink } from './timeFilm';
+type Project = BaseProject & { links?: ProjectLink[] };
+projectSubtype['time-explainer'] = 'Explainer films';
+const projects: Project[] = [baseProjects[0], timeProject, ...baseProjects.slice(1)];
 
 const PAGE = 8;
 const MORE = 8;
@@ -110,9 +114,10 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
         <p className="kicker"><b>{p.discipline.toUpperCase()}</b> {p.placeholder && <em className="ph">PLACEHOLDER</em>}</p>
         <h3>{p.title}</h3>
         {p.link && <p><a className="btn btn-ghost sb-link" href={p.link} target="_blank" rel="noreferrer">{p.podcastEmbed?'Listen on Spotify':'Open the full concept site'} <ArrowUpRight size={14} /></a></p>}
-        {p.film && <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></>}
+        {p.film && (p.id==='bmw-cinematic' ? <><p className="film-project-note">Independent cinematic concept · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /><p className="film-sequence-label">THE SEQUENCE / FOUR SCENES</p></> : <><p className="film-project-note">AI film · {p.film.duration} · Made in Google Flow</p><FilmPlayer film={p.film} /></>)}
+        {p.links && <p style={{display:'flex',gap:12,flexWrap:'wrap'}}>{p.links.map(l=><a key={l.href} className="btn btn-ghost sb-link" href={l.href} {...(l.external?{target:'_blank',rel:'noreferrer'}:{onClick:onClose})}>{l.label} <ArrowUpRight size={14} /></a>)}</p>}
         {p.podcastEmbed && <><iframe src={p.podcastEmbed} title="Spotify player: Your Brain is a Prediction Machine" width="100%" height="352" style={{border:0,borderRadius:12,marginBottom:20}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /><p className="film-project-note">AI-generated audio · ChatGPT source document and artwork · NotebookLM audio · Published by Anurag on Spotify for Creators</p></>}
-        <div className="sb-strip" style={{ ['--i' as string]: i } as React.CSSProperties}>
+        <div className="sb-strip" style={{ ['--i' as string]: i, ...(p.id==='time-explainer'?{display:'none'}:{}) } as React.CSSProperties}>
           {p.panels.map((x, k) => (
             <button key={k} className={`sb-p ${k === i ? 'on' : ''} ${k === i && flip ? 'flip' : ''} s${k % 4}`} onClick={() => (k === i ? setFlip((f) => !f) : setI(k))} aria-label={`Panel ${k + 1}${k === i ? ', press to flip' : ''}`}>
               <span className="face front">
@@ -123,11 +128,11 @@ function Storyboard({ p, onClose }: { p: Project; onClose: () => void }) {
             </button>
           ))}
         </div>
-        <div className="sb-cap">
+        <div className="sb-cap" style={p.id==='time-explainer'?{display:'none'}:undefined}>
           <span className="bubble">{pn.caption}</span><span className="m">Tap the highlighted panel to flip it</span>
           {pn.prompt && <code>{pn.prompt}</code>}
         </div>
-        <div className="sb-nav">
+        <div className="sb-nav" style={p.id==='time-explainer'?{display:'none'}:undefined}>
           <button className="btn btn-ghost" disabled={i === 0} onClick={() => setI(i - 1)}><ArrowLeft size={14} /> Prev</button>
           <span className="m">{num(i + 1)} / {num(n)}</span>
           <button className="btn btn-ghost" disabled={i === n - 1} onClick={() => setI(i + 1)}>Next <ArrowRight size={14} /></button>

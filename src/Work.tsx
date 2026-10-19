@@ -6,7 +6,7 @@ import { DISCIPLINES, projects as baseProjects, projectSubtype, type Project as 
 import { timeProject, type ProjectLink } from './timeFilm';
 type Project = BaseProject & { links?: ProjectLink[] };
 projectSubtype['time-explainer'] = 'Explainer films';
-const projects: Project[] = [baseProjects[0], timeProject, ...baseProjects.slice(1)];
+const projects: Project[] = [timeProject, ...baseProjects];
 
 const PAGE = 8;
 const MORE = 8;
@@ -25,6 +25,7 @@ const untilt = (e: React.PointerEvent<HTMLElement>) => { const s = e.currentTarg
 
 export function WorkTile({ids,sectionId='work',heading='Browse by type',label='WORK INDEX',n='01',children}:{ids?:string[];sectionId?:string;heading?:string;label?:string;n?:string;children?:React.ReactNode}={}) {
   const scoped=ids?projects.filter(p=>ids.includes(p.id)):projects;
+  const filmOnly = scoped.length>0 && scoped.every(p=>p.film);
   const [filter, setFilter] = React.useState<string>('ALL');
   const [subtype, setSubtype] = React.useState('ALL');
   const [view, setView] = React.useState<'grid' | 'list'>(ids?.length===1?'list':'grid');
@@ -48,15 +49,33 @@ export function WorkTile({ids,sectionId='work',heading='Browse by type',label='W
         </div>}
         <div className="wright">
           {projects.length > 20 && <input className="wsearch" placeholder="Search" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search projects" />}
-          <div className="vt">
+          {!filmOnly && <div className="vt">
             <button className={view === 'grid' ? 'on' : ''} onClick={() => setView('grid')} aria-label="Grid view"><LayoutGrid size={14} /></button>
             <button className={view === 'list' ? 'on' : ''} onClick={() => setView('list')} aria-label="List view"><List size={14} /></button>
-          </div>
+          </div>}
         </div>
       </div>
       {!ids && filter !== 'ALL' && subtypes.length > 0 && <div className="chips2" role="group" aria-label="Filter by subtype" style={{marginBottom:18}}>{['ALL',...subtypes].map(s=><button key={s} className={subtype===s?'on':''} aria-pressed={subtype===s} onClick={()=>{setSubtype(s);setShown(projects.length);}}>{s==='ALL'?'All '+filter.toLowerCase():s}</button>)}</div>}
       {vis.length === 0 && <p className="note">Nothing in this filter yet.</p>}
-      <div className={`wgrid v-${view}`}>
+      {filmOnly && <div className="ff-list">
+        {vis.map((p) => (
+          <article className="film-feature" key={p.id}>
+            <div className="ff-media">{p.film && <FilmPlayer film={p.film} />}</div>
+            <aside className="ff-panel">
+              <small className="ff-k">{p.discipline} · {projectSubtype[p.id]}{p.year ? ` · ${p.year}` : ''}</small>
+              <h3>{p.title}</h3>
+              <p className="ff-sum">{p.summary}</p>
+              <div className="ff-links">{p.links && p.links.map(l=><a key={l.href} className="btn btn-ghost" href={l.href} {...(l.external?{target:'_blank',rel:'noreferrer'}:{})}>{l.label} <ArrowUpRight size={14} /></a>)}</div>
+              <div className="ff-meta">
+                {p.film?.duration && <div><span>DURATION</span><b>{p.film.duration}</b></div>}
+                {p.year && <div><span>YEAR</span><b>{p.year}</b></div>}
+                {p.tools?.length ? <div><span>MADE WITH</span><b>{p.tools.join(', ')}</b></div> : null}
+              </div>
+            </aside>
+          </article>
+        ))}
+      </div>}
+      {!filmOnly && <div className={`wgrid v-${view}`}>
         {vis.map((p, i) => (
           <React.Fragment key={p.id}>{!ids && filter==='ALL' && (i===0 || vis[i-1].discipline!==p.discipline) && <h3 style={{gridColumn:'1 / -1',fontSize:24,margin:'18px 0 0'}}>{p.discipline}</h3>}<div className="project-entry"><button className={`wcard ${false ? 'feat' : ''}`} onClick={() => ['stepwell-carousel', 'light-mood-lab'].includes(p.id) && p.link ? window.open(p.link, '_blank', 'noopener,noreferrer') : p.readerIssue ? window.dispatchEvent(new CustomEvent('open-cover-stories', { detail: p.readerIssue })) : setOpen(p)} onPointerMove={tilt} onPointerLeave={untilt} style={{ ['--h' as string]: hue(p.id) } as React.CSSProperties}>
             <span className="wcover">
@@ -71,7 +90,7 @@ export function WorkTile({ids,sectionId='work',heading='Browse by type',label='W
         {list.length > shown && (
           <button className="wmore" onClick={() => setShown(shown + MORE)}>+ {list.length - shown} more · load</button>
         )}
-      </div>
+      </div>}
       {placeholderOnly && <p className="note wnote">These are tagged placeholders. Real projects replace them as we build them together.</p>}
       {children}
       {open && <Storyboard p={open} onClose={() => setOpen(null)} />}

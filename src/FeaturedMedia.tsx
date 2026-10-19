@@ -1,6 +1,7 @@
 import React from 'react';
 import { projects } from './projects';
 import { profile } from './data';
+import { timeProject } from './timeFilm';
 
 const rawMedia = projects.flatMap(p => {
   const images = [...new Set([p.cover, ...p.panels.map(x => x.image)].filter(Boolean))] as string[];
@@ -12,9 +13,11 @@ const qualityOrder = ["BMW","Cover Stories","Sookha","The Brain Explained","Belo
 const ranked = [...projects].sort((a,b)=>qualityOrder.findIndex(x=>a.title.startsWith(x))-qualityOrder.findIndex(x=>b.title.startsWith(x)));
 const leads = ranked.map(p=>rawMedia.find(m=>m.title===p.title)).filter(Boolean) as typeof rawMedia;
 const media = leads.filter(m=>['BMW - cinematic concept','Cover Stories - ten nights, ten issues','Sookha - rain jacket for the commute','The Brain Explained - Your Brain is a Prediction Machine'].includes(m.title));
+const timeLead = {src:timeProject.film?.poster || '',title:timeProject.title,subtitle:timeProject.summary,link:undefined,issue:undefined,video:timeProject.film?.src || '',podcast:false};
+media.unshift(timeLead);
 export function FeaturedMedia(){
  const [paused,setPaused]=React.useState(false);const windowRef=React.useRef<HTMLDivElement>(null);const move=(direction:number)=>{setPaused(true);windowRef.current?.scrollBy({left:direction*(innerWidth<760?308:398),behavior:"smooth"});};const [playing,setPlaying]=React.useState(false);
- return <section className="featured-media" aria-label="Selected work showcase"><div className="film-heading"><p className="kicker"><b>SELECTED WORK</b> / FOUR PROJECTS · A FIRST LOOK</p><button className="pill" onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></div><div className="gallery-controls"><button className="pill" aria-label="Previous media" onClick={()=>move(-1)}>←</button><button className="pill" aria-label="Next media" onClick={()=>move(1)}>→</button></div><div className="media-window" ref={windowRef}><div className={`media-track ${paused||playing?'paused':''}`}>
+ return <section className="featured-media" aria-label="Selected work showcase"><div className="film-heading"><p className="kicker"><b>SELECTED WORK</b> / FIVE PROJECTS · A FIRST LOOK</p><button className="pill" onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></div><div className="gallery-controls"><button className="pill" aria-label="Previous media" onClick={()=>move(-1)}>←</button><button className="pill" aria-label="Next media" onClick={()=>move(1)}>→</button></div><div className="media-window" ref={windowRef}><div className={`media-track ${paused||playing?'paused':''}`}>
  {[0,1].map(copy=><div className="media-set" key={copy} aria-hidden={copy===1?true:undefined}>{media.map((m,i)=><article className="media-card" key={`${copy}-${i}`}>{m.video?<video src={m.video} poster={m.src} controls playsInline preload="none" onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onEnded={()=>setPlaying(false)} tabIndex={copy?-1:0}/>:<img src={m.src} alt={m.title} loading="lazy"/>}<div><small>{m.podcast?'AI PODCAST':m.video?'FILM':'VISUAL'}</small><h3>{m.title}</h3><p>{m.subtitle}</p>{m.link?<a tabIndex={copy?-1:0} href={m.link}>{m.podcast?'Listen on Spotify ↗':'Open project ↗'}</a>:<button tabIndex={copy?-1:0} onClick={()=>{document.getElementById(m.issue?'covers':'work')?.scrollIntoView({behavior:'smooth'});if(m.issue)window.dispatchEvent(new CustomEvent('open-cover-stories',{detail:m.issue}));}}>Explore work ↗</button>}</div></article>)}</div>)}
  </div></div><p className="gallery-note">A first look across films, images, websites and audio. Browse all projects by type below. Hover, focus or use Pause to stop motion.</p></section>
 }

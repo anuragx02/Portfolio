@@ -663,3 +663,18 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 @media(max-width:600px){.contact-cards .social-logo{width:60px;height:60px}}
 
 .contact-cards small{margin-top:20px}
+
+/* Film feature rows (Film and motion) */
+.ff-list{display:grid;gap:26px;margin-top:8px}
+.film-feature{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.9fr);gap:clamp(18px,3vw,34px);border:1px solid var(--line2);border-radius:18px;padding:clamp(14px,2vw,22px);background:rgba(255,255,255,.015)}
+.ff-media{min-width:0}
+.ff-media .film-player{border:1px solid var(--line2);border-radius:12px;height:100%}
+.ff-panel{display:flex;flex-direction:column;gap:14px;min-width:0;padding:4px 2px}
+.ff-panel .ff-k{font:500 10px var(--mono);letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.ff-panel h3{font-size:clamp(20px,2.2vw,28px);line-height:1.15;margin:0}
+.ff-panel .ff-sum{color:var(--mute);font-size:14px;line-height:1.65;margin:0}
+.ff-links{display:flex;gap:10px;flex-wrap:wrap}
+.ff-meta{display:grid;gap:10px;margin-top:auto;border-top:1px solid var(--line2);padding-top:16px}
+.ff-meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:500 11px var(--mono);letter-spacing:.1em;color:var(--mute)}
+.ff-meta b{color:var(--bone);font-weight:500;text-align:right}
+@media(max-width:900px){.film-feature{grid-template-columns:1fr}.ff-meta{margin-top:6px}}

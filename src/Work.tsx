@@ -4,9 +4,11 @@ import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, LayoutGrid, List, X } from 'lucide-react';
 import { DISCIPLINES, projects as baseProjects, projectSubtype, type Project as BaseProject } from './projects';
 import { timeProject, type ProjectLink } from './timeFilm';
+import { bialettiProject } from './bialettiFilm';
 type Project = BaseProject & { links?: ProjectLink[] };
 projectSubtype['time-explainer'] = 'Explainer films';
-const projects: Project[] = [timeProject, ...baseProjects];
+projectSubtype['bialetti-i-made-you-one'] = 'Product films';
+const projects: Project[] = [bialettiProject, timeProject, ...baseProjects];
 
 const PAGE = 8;
 const MORE = 8;
@@ -59,7 +61,7 @@ export function WorkTile({ids,sectionId='work',heading='Browse by type',label='W
       {vis.length === 0 && <p className="note">Nothing in this filter yet.</p>}
       {filmOnly && <div className="ff-list">
         {vis.map((p) => (
-          <article className="film-feature" key={p.id}>
+          <article className={`film-feature${p.film?.portrait ? " film-feature-portrait" : ""}`} key={p.id}>
             <div className="ff-media">{p.film && <FilmPlayer film={p.film} />}</div>
             <aside className="ff-panel">
               <small className="ff-k">{p.discipline} · {projectSubtype[p.id]}{p.year ? ` · ${p.year}` : ''}</small>

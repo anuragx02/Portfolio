@@ -678,3 +678,8 @@ html[data-theme=chrome]{--c1:#f4f6fa;--c2:#7d889c;--c3:#262b37}
 .ff-meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:500 11px var(--mono);letter-spacing:.1em;color:var(--mute)}
 .ff-meta b{color:var(--bone);font-weight:500;text-align:right}
 @media(max-width:900px){.film-feature{grid-template-columns:1fr}.ff-meta{margin-top:6px}}
+
+/* Portrait films retain their full native frame inside the existing film layout. */
+.film-feature-portrait{grid-template-columns:minmax(0,.85fr) minmax(280px,1.2fr);align-items:center}
+.ff-media .film-player-portrait{aspect-ratio:9/16;height:auto;max-height:680px;width:100%;max-width:383px;margin-inline:auto}
+@media(max-width:900px){.film-feature-portrait{grid-template-columns:1fr}.ff-media .film-player-portrait{max-width:320px}}

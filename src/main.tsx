@@ -362,7 +362,7 @@ function App() {
       <main>
         <Hero />
         <div className="wrap dash">
-          <WorkTile ids={['bmw-cinematic','time-explainer']} sectionId="work" n="01" label="VIDEOS / PRODUCT FILM" heading="Film and motion" />
+          <WorkTile ids={['bialetti-i-made-you-one','bmw-cinematic','time-explainer']} sectionId="work" n="01" label="VIDEOS / PRODUCT FILM" heading="Film and motion" />
           <WorkTile ids={['stepwell-carousel']} sectionId="visual-stories" n="02" label="IMAGES / CAROUSEL" heading="Images and visual stories" />
           <CoverStories />
           <Exhibition />
